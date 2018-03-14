@@ -1,0 +1,2417 @@
+
+
+Microchip Technology PIC18 LITE Macro Assembler V1.37 build -260352376 
+                                                                                               Wed Mar 14 00:06:41 2018
+
+Microchip Technology Omniscient Code Generator v1.37 (Free mode) build 201603110536
+     1                           	processor	18F2550
+     2                           	fnconf	rparam,??,?,0
+     3                           	opt	pw 120
+     4                           	opt	lm
+     5                           	psect	cinit,global,reloc=2,class=CODE,delta=1
+     6                           	psect	bssCOMRAM,global,class=COMRAM,space=1,delta=1
+     7                           	psect	cstackCOMRAM,global,class=COMRAM,space=1,delta=1
+     8                           	psect	text0,global,reloc=2,class=CODE,delta=1
+     9                           	psect	text1,global,reloc=2,class=CODE,delta=1
+    10                           	psect	text2,global,reloc=2,class=CODE,delta=1
+    11                           	psect	text3,global,reloc=2,class=CODE,delta=1
+    12                           	psect	text4,global,reloc=2,class=CODE,delta=1
+    13                           	psect	text5,global,reloc=2,class=CODE,delta=1
+    14                           	psect	text6,global,reloc=2,class=CODE,delta=1
+    15                           	psect	text7,global,reloc=2,class=CODE,delta=1
+    16                           	psect	text8,global,reloc=2,class=CODE,delta=1
+    17                           	psect	text9,global,reloc=2,class=CODE,delta=1
+    18                           	psect	text10,global,reloc=2,class=CODE,delta=1
+    19                           	psect	text11,global,reloc=2,class=CODE,delta=1
+    20                           	psect	text12,global,reloc=2,class=CODE,delta=1
+    21                           	psect	text13,global,reloc=2,class=CODE,delta=1
+    22                           	psect	text14,global,reloc=2,class=CODE,delta=1
+    23                           	psect	intcode,global,reloc=2,class=CODE,delta=1
+    24                           	psect	intcode_body,global,reloc=2,class=CODE,delta=1
+    25                           	psect	text16,global,reloc=2,class=CODE,delta=1
+    26                           	psect	intsave_regs,global,class=BIGRAM,space=1,delta=1
+    27                           	psect	rparam,global,class=COMRAM,space=1,delta=1
+    28                           	psect	temp,global,ovrld,common,class=COMRAM,space=1,delta=1
+    29  0000                     _ADCON1bits	set	4033
+    30  0000                     _CCP1CONbits	set	4029
+    31  0000                     _CCP2CONbits	set	4026
+    32  0000                     _CCPR1L	set	4030
+    33  0000                     _CCPR2L	set	4027
+    34  0000                     _INTCONbits	set	4082
+    35  0000                     _LATAbits	set	3977
+    36  0000                     _LATBbits	set	3978
+    37  0000                     _LATCbits	set	3979
+    38  0000                     _PORTAbits	set	3968
+    39  0000                     _PR2	set	4043
+    40  0000                     _T0CON	set	4053
+    41  0000                     _T2CON	set	4042
+    42  0000                     _TRISAbits	set	3986
+    43  0000                     _TRISBbits	set	3987
+    44  0000                     _TRISCbits	set	3988
+    45                           
+    46                           ; #config settings
+    47  0000                     
+    48                           	psect	cinit
+    49  0005F0                     __pcinit:
+    50                           	opt stack 0
+    51  0005F0                     start_initialization:
+    52                           	opt stack 0
+    53  0005F0                     __initialization:
+    54                           	opt stack 0
+    55                           
+    56                           ; Clear objects allocated to COMRAM (9 bytes)
+    57  0005F0  EE00  F02C         	lfsr	0,__pbssCOMRAM
+    58  0005F4  0E09               	movlw	9
+    59  0005F6                     clear_0:
+    60  0005F6  6AEE               	clrf	postinc0,c
+    61  0005F8  06E8               	decf	wreg,f,c
+    62  0005FA  E1FD               	bnz	clear_0
+    63  0005FC                     end_of_initialization:
+    64                           	opt stack 0
+    65  0005FC                     __end_of__initialization:
+    66                           	opt stack 0
+    67  0005FC  9035               	bcf	int$flags,0,c	;clear compiler interrupt flag (level 1)
+    68  0005FE  9235               	bcf	int$flags,1,c	;clear compiler interrupt flag (level 2)
+    69  000600  0E00               	movlw	low (__Lmediumconst shr (0+16))
+    70  000602  6EF8               	movwf	tblptru,c
+    71  000604  0100               	movlb	0
+    72  000606  EF3B  F003         	goto	_main	;jump to C main() function
+    73                           tblptru	equ	0xFF8
+    74                           postinc0	equ	0xFEE
+    75                           wreg	equ	0xFE8
+    76                           
+    77                           	psect	bssCOMRAM
+    78  00002C                     __pbssCOMRAM:
+    79                           	opt stack 0
+    80  00002C                     _millisCounter:
+    81                           	opt stack 0
+    82  00002C                     	ds	4
+    83  000030                     _fractionCounter:
+    84                           	opt stack 0
+    85  000030                     	ds	2
+    86  000032                     _status:
+    87                           	opt stack 0
+    88  000032                     	ds	2
+    89  000034                     _flagStatus:
+    90                           	opt stack 0
+    91  000034                     	ds	1
+    92                           tblptru	equ	0xFF8
+    93                           postinc0	equ	0xFEE
+    94                           wreg	equ	0xFE8
+    95                           
+    96                           	psect	cstackCOMRAM
+    97  000001                     __pcstackCOMRAM:
+    98                           	opt stack 0
+    99  000001                     ??_ISR:
+   100                           
+   101                           ; 1 bytes @ 0x0
+   102  000001                     	ds	14
+   103  00000F                     ?___awdiv:
+   104                           	opt stack 0
+   105  00000F                     ?_millis:
+   106                           	opt stack 0
+   107  00000F                     newStatus@x:
+   108                           	opt stack 0
+   109  00000F                     setLEDs@y:
+   110                           	opt stack 0
+   111  00000F                     setStatus@s:
+   112                           	opt stack 0
+   113  00000F                     ___awdiv@dividend:
+   114                           	opt stack 0
+   115                           
+   116                           ; 2 bytes @ 0xE
+   117  00000F                     	ds	1
+   118  000010                     setLEDs@g:
+   119                           	opt stack 0
+   120                           
+   121                           ; 1 bytes @ 0xF
+   122  000010                     	ds	1
+   123  000011                     setLEDs@r:
+   124                           	opt stack 0
+   125  000011                     ___awdiv@divisor:
+   126                           	opt stack 0
+   127                           
+   128                           ; 2 bytes @ 0x10
+   129  000011                     	ds	2
+   130  000013                     ___awdiv@counter:
+   131                           	opt stack 0
+   132                           
+   133                           ; 1 bytes @ 0x12
+   134  000013                     	ds	1
+   135  000014                     ___awdiv@sign:
+   136                           	opt stack 0
+   137                           
+   138                           ; 1 bytes @ 0x13
+   139  000014                     	ds	1
+   140  000015                     ___awdiv@quotient:
+   141                           	opt stack 0
+   142                           
+   143                           ; 2 bytes @ 0x14
+   144  000015                     	ds	2
+   145  000017                     setLeftMotor@speed:
+   146                           	opt stack 0
+   147  000017                     setRightMotor@speed:
+   148                           	opt stack 0
+   149                           
+   150                           ; 2 bytes @ 0x16
+   151  000017                     	ds	2
+   152  000019                     ??_setLeftMotor:
+   153  000019                     ??_setRightMotor:
+   154                           
+   155                           ; 1 bytes @ 0x18
+   156  000019                     	ds	2
+   157  00001B                     setMotors@left:
+   158                           	opt stack 0
+   159                           
+   160                           ; 2 bytes @ 0x1A
+   161  00001B                     	ds	2
+   162  00001D                     setMotors@right:
+   163                           	opt stack 0
+   164                           
+   165                           ; 2 bytes @ 0x1C
+   166  00001D                     	ds	2
+   167  00001F                     ??_loop:
+   168                           
+   169                           ; 1 bytes @ 0x1E
+   170  00001F                     	ds	5
+   171  000024                     loop@next:
+   172                           	opt stack 0
+   173                           
+   174                           ; 4 bytes @ 0x23
+   175  000024                     	ds	4
+   176  000028                     loop@now:
+   177                           	opt stack 0
+   178                           
+   179                           ; 4 bytes @ 0x27
+   180  000028                     	ds	4
+   181  00002C                     tblptru	equ	0xFF8
+   182                           postinc0	equ	0xFEE
+   183                           wreg	equ	0xFE8
+   184                           
+   185                           ; 1 bytes @ 0x2B
+   186 ;;
+   187 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+   188 ;;
+   189 ;; *************** function _main *****************
+   190 ;; Defined at:
+   191 ;;		line 110 in file "main.c"
+   192 ;; Parameters:    Size  Location     Type
+   193 ;;		None
+   194 ;; Auto vars:     Size  Location     Type
+   195 ;;		None
+   196 ;; Return value:  Size  Location     Type
+   197 ;;                  1    wreg      void 
+   198 ;; Registers used:
+   199 ;;		wreg, status,2, status,0, cstack
+   200 ;; Tracked objects:
+   201 ;;		On entry : 0/0
+   202 ;;		On exit  : 0/0
+   203 ;;		Unchanged: 0/0
+   204 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   205 ;;      Params:         0       0       0       0       0       0       0       0       0
+   206 ;;      Locals:         0       0       0       0       0       0       0       0       0
+   207 ;;      Temps:          0       0       0       0       0       0       0       0       0
+   208 ;;      Totals:         0       0       0       0       0       0       0       0       0
+   209 ;;Total ram usage:        0 bytes
+   210 ;; Hardware stack levels required when called:    6
+   211 ;; This function calls:
+   212 ;;		_loop
+   213 ;; This function is called by:
+   214 ;;		Startup code after reset
+   215 ;; This function uses a non-reentrant model
+   216 ;;
+   217                           
+   218                           	psect	text0
+   219  000676                     __ptext0:
+   220                           	opt stack 0
+   221  000676                     _main:
+   222                           	opt stack 25
+   223  000676  EC0D  F000         	call	_loop	;wreg free
+   224  00067A  D7FD               	goto	l1147
+   225  00067C                     __end_of_main:
+   226                           	opt stack 0
+   227                           tblptru	equ	0xFF8
+   228                           postinc0	equ	0xFEE
+   229                           wreg	equ	0xFE8
+   230                           
+   231 ;; *************** function _loop *****************
+   232 ;; Defined at:
+   233 ;;		line 31 in file "main.c"
+   234 ;; Parameters:    Size  Location     Type
+   235 ;;		None
+   236 ;; Auto vars:     Size  Location     Type
+   237 ;;  now             4   39[COMRAM] unsigned long 
+   238 ;;  next            4   35[COMRAM] unsigned long 
+   239 ;; Return value:  Size  Location     Type
+   240 ;;                  1    wreg      void 
+   241 ;; Registers used:
+   242 ;;		wreg, status,2, status,0, cstack
+   243 ;; Tracked objects:
+   244 ;;		On entry : 0/0
+   245 ;;		On exit  : 0/0
+   246 ;;		Unchanged: 0/0
+   247 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   248 ;;      Params:         0       0       0       0       0       0       0       0       0
+   249 ;;      Locals:         8       0       0       0       0       0       0       0       0
+   250 ;;      Temps:          5       0       0       0       0       0       0       0       0
+   251 ;;      Totals:        13       0       0       0       0       0       0       0       0
+   252 ;;Total ram usage:       13 bytes
+   253 ;; Hardware stack levels used:    1
+   254 ;; Hardware stack levels required when called:    5
+   255 ;; This function calls:
+   256 ;;		_initEtc
+   257 ;;		_initInterrupts
+   258 ;;		_initMotors
+   259 ;;		_initTimer
+   260 ;;		_initUI
+   261 ;;		_millis
+   262 ;;		_newStatus
+   263 ;;		_setLEDs
+   264 ;;		_setMotors
+   265 ;;		_setStatus
+   266 ;; This function is called by:
+   267 ;;		_main
+   268 ;; This function uses a non-reentrant model
+   269 ;;
+   270                           
+   271                           	psect	text1
+   272  00001A                     __ptext1:
+   273                           	opt stack 0
+   274  00001A                     _loop:
+   275                           	opt stack 25
+   276                           
+   277                           ;main.c: 32: unsigned long now = millis();
+   278                           
+   279                           ;incstack = 0
+   280  00001A  EC12  F003         	call	_millis	;wreg free
+   281  00001E  C00F  F028         	movff	?_millis,loop@now
+   282  000022  C010  F029         	movff	?_millis+1,loop@now+1
+   283  000026  C011  F02A         	movff	?_millis+2,loop@now+2
+   284  00002A  C012  F02B         	movff	?_millis+3,loop@now+3
+   285                           
+   286                           ;main.c: 33: unsigned long next = 0;
+   287  00002E  0E00               	movlw	0
+   288  000030  6E24               	movwf	loop@next,c
+   289  000032  0E00               	movlw	0
+   290  000034  6E25               	movwf	loop@next+1,c
+   291  000036  0E00               	movlw	0
+   292  000038  6E26               	movwf	loop@next+2,c
+   293  00003A  0E00               	movlw	0
+   294  00003C  6E27               	movwf	loop@next+3,c
+   295                           
+   296                           ;main.c: 34: switch(status){
+   297  00003E  D132               	goto	l1141
+   298  000040                     l1073:
+   299                           
+   300                           ;main.c: 36: initEtc();
+   301  000040  EC36  F003         	call	_initEtc	;wreg free
+   302                           
+   303                           ;main.c: 37: initUI();
+   304  000044  EC1B  F003         	call	_initUI	;wreg free
+   305                           
+   306                           ;main.c: 38: setLEDs(0, 1, 0);
+   307  000048  0E01               	movlw	1
+   308  00004A  6E0F               	movwf	setLEDs@y,c
+   309  00004C  0E00               	movlw	0
+   310  00004E  6E10               	movwf	setLEDs@g,c
+   311  000050  0E00               	movlw	0
+   312  000052  ECE7  F002         	call	_setLEDs
+   313                           
+   314                           ;main.c: 39: initInterrupts();
+   315  000056  EC3E  F003         	call	_initInterrupts	;wreg free
+   316                           
+   317                           ;main.c: 40: initTimer();
+   318  00005A  EC31  F003         	call	_initTimer	;wreg free
+   319                           
+   320                           ;main.c: 41: initMotors();
+   321  00005E  ECAD  F002         	call	_initMotors	;wreg free
+   322                           
+   323                           ;main.c: 42: setStatus(MENU);
+   324  000062  0E00               	movlw	0
+   325  000064  6E10               	movwf	setStatus@s+1,c
+   326  000066  0E01               	movlw	1
+   327  000068  6E0F               	movwf	setStatus@s,c
+   328  00006A  EC24  F003         	call	_setStatus	;wreg free
+   329                           
+   330                           ;main.c: 43: break;
+   331  00006E  0012               	return	
+   332  000070                     l1079:
+   333                           
+   334                           ;main.c: 46: if(newStatus()){
+   335  000070  EC2B  F003         	call	_newStatus	;wreg free
+   336  000074  0900               	iorlw	0
+   337  000076  B4D8               	btfsc	status,2,c
+   338  000078  D011               	goto	l1085
+   339                           
+   340                           ;main.c: 47: setLEDs(0, 0, 0);
+   341  00007A  0E00               	movlw	0
+   342  00007C  6E0F               	movwf	setLEDs@y,c
+   343  00007E  0E00               	movlw	0
+   344  000080  6E10               	movwf	setLEDs@g,c
+   345  000082  0E00               	movlw	0
+   346  000084  ECE7  F002         	call	_setLEDs
+   347                           
+   348                           ;main.c: 48: setMotors(0, 0);
+   349  000088  0E00               	movlw	0
+   350  00008A  6E1C               	movwf	setMotors@left+1,c
+   351  00008C  0E00               	movlw	0
+   352  00008E  6E1B               	movwf	setMotors@left,c
+   353  000090  0E00               	movlw	0
+   354  000092  6E1E               	movwf	setMotors@right+1,c
+   355  000094  0E00               	movlw	0
+   356  000096  6E1D               	movwf	setMotors@right,c
+   357  000098  EC05  F003         	call	_setMotors	;wreg free
+   358  00009C                     l1085:
+   359                           
+   360                           ;main.c: 49: }
+   361                           ;main.c: 55: if((!(PORTAbits.RA1))){
+   362  00009C  B280               	btfsc	3968,1,c	;volatile
+   363  00009E  D007               	goto	l84
+   364                           
+   365                           ;main.c: 56: setStatus(CLEAN);
+   366  0000A0  0E00               	movlw	0
+   367  0000A2  6E10               	movwf	setStatus@s+1,c
+   368  0000A4  0E02               	movlw	2
+   369  0000A6  6E0F               	movwf	setStatus@s,c
+   370  0000A8  EC24  F003         	call	_setStatus	;wreg free
+   371                           
+   372                           ;main.c: 57: return;
+   373  0000AC  0012               	return	
+   374  0000AE                     l84:
+   375                           
+   376                           ;main.c: 58: }
+   377                           ;main.c: 59: if((!(PORTAbits.RA0))){
+   378  0000AE  B080               	btfsc	3968,0,c	;volatile
+   379  0000B0  0012               	return	
+   380                           
+   381                           ;main.c: 60: setStatus(READY);
+   382  0000B2  0E00               	movlw	0
+   383  0000B4  6E10               	movwf	setStatus@s+1,c
+   384  0000B6  0E03               	movlw	3
+   385  0000B8  6E0F               	movwf	setStatus@s,c
+   386  0000BA  EC24  F003         	call	_setStatus	;wreg free
+   387                           
+   388                           ;main.c: 62: }
+   389                           ;main.c: 63: break;
+   390                           
+   391                           ;main.c: 61: return;
+   392  0000BE  0012               	return	
+   393  0000C0                     l1095:
+   394                           
+   395                           ;main.c: 66: if(newStatus()){
+   396  0000C0  EC2B  F003         	call	_newStatus	;wreg free
+   397  0000C4  0900               	iorlw	0
+   398  0000C6  B4D8               	btfsc	status,2,c
+   399  0000C8  D011               	goto	l1101
+   400                           
+   401                           ;main.c: 67: setMotors(1000, 1000);
+   402  0000CA  0E03               	movlw	3
+   403  0000CC  6E1C               	movwf	setMotors@left+1,c
+   404  0000CE  0EE8               	movlw	232
+   405  0000D0  6E1B               	movwf	setMotors@left,c
+   406  0000D2  0E03               	movlw	3
+   407  0000D4  6E1E               	movwf	setMotors@right+1,c
+   408  0000D6  0EE8               	movlw	232
+   409  0000D8  6E1D               	movwf	setMotors@right,c
+   410  0000DA  EC05  F003         	call	_setMotors	;wreg free
+   411                           
+   412                           ;main.c: 68: setLEDs(1, 1, 1);
+   413  0000DE  0E01               	movlw	1
+   414  0000E0  6E0F               	movwf	setLEDs@y,c
+   415  0000E2  0E01               	movlw	1
+   416  0000E4  6E10               	movwf	setLEDs@g,c
+   417  0000E6  0E01               	movlw	1
+   418  0000E8  ECE7  F002         	call	_setLEDs
+   419  0000EC                     l1101:
+   420                           
+   421                           ;main.c: 69: }
+   422                           ;main.c: 70: if(now >= next){
+   423  0000EC  5024               	movf	loop@next,w,c
+   424  0000EE  5C28               	subwf	loop@now,w,c
+   425  0000F0  5025               	movf	loop@next+1,w,c
+   426  0000F2  5829               	subwfb	loop@now+1,w,c
+   427  0000F4  5026               	movf	loop@next+2,w,c
+   428  0000F6  582A               	subwfb	loop@now+2,w,c
+   429  0000F8  5027               	movf	loop@next+3,w,c
+   430  0000FA  582B               	subwfb	loop@now+3,w,c
+   431  0000FC  A0D8               	btfss	status,0,c
+   432  0000FE  D033               	goto	l1105
+   433                           
+   434                           ;main.c: 71: next = now + 500;
+   435  000100  0EF4               	movlw	244
+   436  000102  2428               	addwf	loop@now,w,c
+   437  000104  6E24               	movwf	loop@next,c
+   438  000106  0E01               	movlw	1
+   439  000108  2029               	addwfc	loop@now+1,w,c
+   440  00010A  6E25               	movwf	loop@next+1,c
+   441  00010C  0E00               	movlw	0
+   442  00010E  202A               	addwfc	loop@now+2,w,c
+   443  000110  6E26               	movwf	loop@next+2,c
+   444  000112  0E00               	movlw	0
+   445  000114  202B               	addwfc	loop@now+3,w,c
+   446  000116  6E27               	movwf	loop@next+3,c
+   447                           
+   448                           ;main.c: 72: LATAbits.LATA4 = (!LATAbits.LATA4);
+   449  000118  B889               	btfsc	3977,4,c	;volatile
+   450  00011A  D003               	goto	u790
+   451  00011C  6A1F               	clrf	??_loop& (0+255),c
+   452  00011E  2A1F               	incf	??_loop& (0+255),f,c
+   453  000120  D001               	goto	u808
+   454  000122                     u790:
+   455  000122  6A1F               	clrf	??_loop& (0+255),c
+   456  000124                     u808:
+   457  000124  3A1F               	swapf	??_loop,f,c
+   458  000126  5089               	movf	3977,w,c	;volatile
+   459  000128  181F               	xorwf	??_loop,w,c
+   460  00012A  0BEF               	andlw	-17
+   461  00012C  181F               	xorwf	??_loop,w,c
+   462  00012E  6E89               	movwf	3977,c	;volatile
+   463                           
+   464                           ;main.c: 73: LATAbits.LATA3 = (!LATAbits.LATA3);
+   465  000130  B689               	btfsc	3977,3,c	;volatile
+   466  000132  D003               	goto	u810
+   467  000134  6A1F               	clrf	??_loop& (0+255),c
+   468  000136  2A1F               	incf	??_loop& (0+255),f,c
+   469  000138  D001               	goto	u828
+   470  00013A                     u810:
+   471  00013A  6A1F               	clrf	??_loop& (0+255),c
+   472  00013C                     u828:
+   473  00013C  461F               	rlncf	??_loop,f,c
+   474  00013E  461F               	rlncf	??_loop,f,c
+   475  000140  461F               	rlncf	??_loop,f,c
+   476  000142  5089               	movf	3977,w,c	;volatile
+   477  000144  181F               	xorwf	??_loop,w,c
+   478  000146  0BF7               	andlw	-9
+   479  000148  181F               	xorwf	??_loop,w,c
+   480  00014A  6E89               	movwf	3977,c	;volatile
+   481                           
+   482                           ;main.c: 74: LATAbits.LATA2 = (!LATAbits.LATA2);
+   483  00014C  B489               	btfsc	3977,2,c	;volatile
+   484  00014E  D003               	goto	u830
+   485  000150  6A1F               	clrf	??_loop& (0+255),c
+   486  000152  2A1F               	incf	??_loop& (0+255),f,c
+   487  000154  D001               	goto	u848
+   488  000156                     u830:
+   489  000156  6A1F               	clrf	??_loop& (0+255),c
+   490  000158                     u848:
+   491  000158  461F               	rlncf	??_loop,f,c
+   492  00015A  461F               	rlncf	??_loop,f,c
+   493  00015C  5089               	movf	3977,w,c	;volatile
+   494  00015E  181F               	xorwf	??_loop,w,c
+   495  000160  0BFB               	andlw	-5
+   496  000162  181F               	xorwf	??_loop,w,c
+   497  000164  6E89               	movwf	3977,c	;volatile
+   498  000166                     l1105:
+   499                           
+   500                           ;main.c: 75: }
+   501                           ;main.c: 76: if(!(!(PORTAbits.RA1))) setStatus(MENU);
+   502  000166  A280               	btfss	3968,1,c	;volatile
+   503  000168  0012               	return	
+   504  00016A  0E00               	movlw	0
+   505  00016C  6E10               	movwf	setStatus@s+1,c
+   506  00016E  0E01               	movlw	1
+   507  000170  6E0F               	movwf	setStatus@s,c
+   508  000172  EC24  F003         	call	_setStatus	;wreg free
+   509                           
+   510                           ;main.c: 77: break;
+   511  000176  0012               	return	
+   512  000178                     l1109:
+   513                           
+   514                           ;main.c: 80: if(newStatus()){
+   515  000178  EC2B  F003         	call	_newStatus	;wreg free
+   516  00017C  0900               	iorlw	0
+   517  00017E  B4D8               	btfsc	status,2,c
+   518  000180  D011               	goto	l1115
+   519                           
+   520                           ;main.c: 81: setMotors(0, 0);
+   521  000182  0E00               	movlw	0
+   522  000184  6E1C               	movwf	setMotors@left+1,c
+   523  000186  0E00               	movlw	0
+   524  000188  6E1B               	movwf	setMotors@left,c
+   525  00018A  0E00               	movlw	0
+   526  00018C  6E1E               	movwf	setMotors@right+1,c
+   527  00018E  0E00               	movlw	0
+   528  000190  6E1D               	movwf	setMotors@right,c
+   529  000192  EC05  F003         	call	_setMotors	;wreg free
+   530                           
+   531                           ;main.c: 82: setLEDs(0, 0, 0);
+   532  000196  0E00               	movlw	0
+   533  000198  6E0F               	movwf	setLEDs@y,c
+   534  00019A  0E00               	movlw	0
+   535  00019C  6E10               	movwf	setLEDs@g,c
+   536  00019E  0E00               	movlw	0
+   537  0001A0  ECE7  F002         	call	_setLEDs
+   538  0001A4                     l1115:
+   539                           
+   540                           ;main.c: 83: }
+   541                           ;main.c: 84: if(now >= next){
+   542  0001A4  5024               	movf	loop@next,w,c
+   543  0001A6  5C28               	subwf	loop@now,w,c
+   544  0001A8  5025               	movf	loop@next+1,w,c
+   545  0001AA  5829               	subwfb	loop@now+1,w,c
+   546  0001AC  5026               	movf	loop@next+2,w,c
+   547  0001AE  582A               	subwfb	loop@now+2,w,c
+   548  0001B0  5027               	movf	loop@next+3,w,c
+   549  0001B2  582B               	subwfb	loop@now+3,w,c
+   550  0001B4  A0D8               	btfss	status,0,c
+   551  0001B6  D018               	goto	l1119
+   552                           
+   553                           ;main.c: 85: next = now + 500;
+   554  0001B8  0EF4               	movlw	244
+   555  0001BA  2428               	addwf	loop@now,w,c
+   556  0001BC  6E24               	movwf	loop@next,c
+   557  0001BE  0E01               	movlw	1
+   558  0001C0  2029               	addwfc	loop@now+1,w,c
+   559  0001C2  6E25               	movwf	loop@next+1,c
+   560  0001C4  0E00               	movlw	0
+   561  0001C6  202A               	addwfc	loop@now+2,w,c
+   562  0001C8  6E26               	movwf	loop@next+2,c
+   563  0001CA  0E00               	movlw	0
+   564  0001CC  202B               	addwfc	loop@now+3,w,c
+   565  0001CE  6E27               	movwf	loop@next+3,c
+   566                           
+   567                           ;main.c: 86: LATAbits.LATA4 = (!LATAbits.LATA4);
+   568  0001D0  B889               	btfsc	3977,4,c	;volatile
+   569  0001D2  D003               	goto	u880
+   570  0001D4  6A1F               	clrf	??_loop& (0+255),c
+   571  0001D6  2A1F               	incf	??_loop& (0+255),f,c
+   572  0001D8  D001               	goto	u898
+   573  0001DA                     u880:
+   574  0001DA  6A1F               	clrf	??_loop& (0+255),c
+   575  0001DC                     u898:
+   576  0001DC  3A1F               	swapf	??_loop,f,c
+   577  0001DE  5089               	movf	3977,w,c	;volatile
+   578  0001E0  181F               	xorwf	??_loop,w,c
+   579  0001E2  0BEF               	andlw	-17
+   580  0001E4  181F               	xorwf	??_loop,w,c
+   581  0001E6  6E89               	movwf	3977,c	;volatile
+   582  0001E8                     l1119:
+   583                           
+   584                           ;main.c: 87: }
+   585                           ;main.c: 88: if(!(!(PORTAbits.RA0))) setStatus(WAIT);
+   586  0001E8  A080               	btfss	3968,0,c	;volatile
+   587  0001EA  0012               	return	
+   588  0001EC  0E00               	movlw	0
+   589  0001EE  6E10               	movwf	setStatus@s+1,c
+   590  0001F0  0E04               	movlw	4
+   591  0001F2  6E0F               	movwf	setStatus@s,c
+   592  0001F4  EC24  F003         	call	_setStatus	;wreg free
+   593                           
+   594                           ;main.c: 89: break;
+   595  0001F8  0012               	return	
+   596  0001FA                     l1123:
+   597                           
+   598                           ;main.c: 92: if(newStatus()){
+   599  0001FA  EC2B  F003         	call	_newStatus	;wreg free
+   600  0001FE  0900               	iorlw	0
+   601  000200  B4D8               	btfsc	status,2,c
+   602  000202  D01D               	goto	l1131
+   603                           
+   604                           ;main.c: 93: next = now + 4900;
+   605  000204  0E24               	movlw	36
+   606  000206  2428               	addwf	loop@now,w,c
+   607  000208  6E24               	movwf	loop@next,c
+   608  00020A  0E13               	movlw	19
+   609  00020C  2029               	addwfc	loop@now+1,w,c
+   610  00020E  6E25               	movwf	loop@next+1,c
+   611  000210  0E00               	movlw	0
+   612  000212  202A               	addwfc	loop@now+2,w,c
+   613  000214  6E26               	movwf	loop@next+2,c
+   614  000216  0E00               	movlw	0
+   615  000218  202B               	addwfc	loop@now+3,w,c
+   616  00021A  6E27               	movwf	loop@next+3,c
+   617                           
+   618                           ;main.c: 94: setLEDs(1, 0, 0);
+   619  00021C  0E00               	movlw	0
+   620  00021E  6E0F               	movwf	setLEDs@y,c
+   621  000220  0E00               	movlw	0
+   622  000222  6E10               	movwf	setLEDs@g,c
+   623  000224  0E01               	movlw	1
+   624  000226  ECE7  F002         	call	_setLEDs
+   625                           
+   626                           ;main.c: 95: setMotors(0, 0);
+   627  00022A  0E00               	movlw	0
+   628  00022C  6E1C               	movwf	setMotors@left+1,c
+   629  00022E  0E00               	movlw	0
+   630  000230  6E1B               	movwf	setMotors@left,c
+   631  000232  0E00               	movlw	0
+   632  000234  6E1E               	movwf	setMotors@right+1,c
+   633  000236  0E00               	movlw	0
+   634  000238  6E1D               	movwf	setMotors@right,c
+   635  00023A  EC05  F003         	call	_setMotors	;wreg free
+   636  00023E                     l1131:
+   637                           
+   638                           ;main.c: 96: }
+   639                           ;main.c: 97: LATAbits.LATA3 = (now > (next - 3000));
+   640  00023E  0E48               	movlw	72
+   641  000240  2424               	addwf	loop@next,w,c
+   642  000242  6E1F               	movwf	??_loop& (0+255),c
+   643  000244  0EF4               	movlw	244
+   644  000246  2025               	addwfc	loop@next+1,w,c
+   645  000248  6E20               	movwf	(??_loop+1)& (0+255),c
+   646  00024A  0EFF               	movlw	255
+   647  00024C  2026               	addwfc	loop@next+2,w,c
+   648  00024E  6E21               	movwf	(??_loop+2)& (0+255),c
+   649  000250  0EFF               	movlw	255
+   650  000252  2027               	addwfc	loop@next+3,w,c
+   651  000254  6E22               	movwf	(??_loop+3)& (0+255),c
+   652  000256  5028               	movf	loop@now,w,c
+   653  000258  5C1F               	subwf	??_loop,w,c
+   654  00025A  5029               	movf	loop@now+1,w,c
+   655  00025C  5820               	subwfb	??_loop+1,w,c
+   656  00025E  502A               	movf	loop@now+2,w,c
+   657  000260  5821               	subwfb	??_loop+2,w,c
+   658  000262  502B               	movf	loop@now+3,w,c
+   659  000264  5822               	subwfb	??_loop+3,w,c
+   660  000266  B0D8               	btfsc	status,0,c
+   661  000268  D003               	goto	u920
+   662  00026A  6A23               	clrf	(??_loop+4)& (0+255),c
+   663  00026C  2A23               	incf	(??_loop+4)& (0+255),f,c
+   664  00026E  D001               	goto	u938
+   665  000270                     u920:
+   666  000270  6A23               	clrf	(??_loop+4)& (0+255),c
+   667  000272                     u938:
+   668  000272  4623               	rlncf	??_loop+4,f,c
+   669  000274  4623               	rlncf	??_loop+4,f,c
+   670  000276  4623               	rlncf	??_loop+4,f,c
+   671  000278  5089               	movf	3977,w,c	;volatile
+   672  00027A  1823               	xorwf	??_loop+4,w,c
+   673  00027C  0BF7               	andlw	-9
+   674  00027E  1823               	xorwf	??_loop+4,w,c
+   675  000280  6E89               	movwf	3977,c	;volatile
+   676                           
+   677                           ;main.c: 98: if(next >= now){
+   678  000282  5028               	movf	loop@now,w,c
+   679  000284  5C24               	subwf	loop@next,w,c
+   680  000286  5029               	movf	loop@now+1,w,c
+   681  000288  5825               	subwfb	loop@next+1,w,c
+   682  00028A  502A               	movf	loop@now+2,w,c
+   683  00028C  5826               	subwfb	loop@next+2,w,c
+   684  00028E  502B               	movf	loop@now+3,w,c
+   685  000290  5827               	subwfb	loop@next+3,w,c
+   686  000292  A0D8               	btfss	status,0,c
+   687  000294  0012               	return	
+   688                           
+   689                           ;main.c: 99: setStatus(RUN);
+   690  000296  0E00               	movlw	0
+   691  000298  6E10               	movwf	setStatus@s+1,c
+   692  00029A  0E05               	movlw	5
+   693  00029C  6E0F               	movwf	setStatus@s,c
+   694  00029E  EC24  F003         	call	_setStatus	;wreg free
+   695                           
+   696                           ;main.c: 107: }
+   697                           
+   698                           ;main.c: 106: break;
+   699                           
+   700                           ;main.c: 101: }
+   701                           ;main.c: 103: case RUN:
+   702                           
+   703                           ;main.c: 100: return;
+   704  0002A2  0012               	return	
+   705  0002A4                     l1141:
+   706  0002A4  C032  F01F         	movff	_status,??_loop
+   707  0002A8  C033  F020         	movff	_status+1,??_loop+1
+   708                           
+   709                           ; Switch on 2 bytes has been partitioned into a top level switch of size 1, and 1 sub-sw
+      +                          itches
+   710                           ; Switch size 1, requested type "space"
+   711                           ; Number of cases is 1, Range of values is 0 to 0
+   712                           ; switch strategies available:
+   713                           ; Name         Instructions Cycles
+   714                           ; simple_byte            4     3 (average)
+   715                           ;	Chosen strategy is simple_byte
+   716  0002AC  5020               	movf	??_loop+1,w,c
+   717  0002AE  0A00               	xorlw	0	; case 0
+   718  0002B0  A4D8               	btfss	status,2,c
+   719  0002B2  0012               	return	
+   720                           
+   721                           ; Switch size 1, requested type "space"
+   722                           ; Number of cases is 6, Range of values is 0 to 5
+   723                           ; switch strategies available:
+   724                           ; Name         Instructions Cycles
+   725                           ; simple_byte           19    10 (average)
+   726                           ;	Chosen strategy is simple_byte
+   727  0002B4  501F               	movf	??_loop,w,c
+   728  0002B6  0A00               	xorlw	0	; case 0
+   729  0002B8  B4D8               	btfsc	status,2,c
+   730  0002BA  D6C2               	goto	l1073
+   731  0002BC  0A01               	xorlw	1	; case 1
+   732  0002BE  B4D8               	btfsc	status,2,c
+   733  0002C0  D6D7               	goto	l1079
+   734  0002C2  0A03               	xorlw	3	; case 2
+   735  0002C4  B4D8               	btfsc	status,2,c
+   736  0002C6  D6FC               	goto	l1095
+   737  0002C8  0A01               	xorlw	1	; case 3
+   738  0002CA  B4D8               	btfsc	status,2,c
+   739  0002CC  D755               	goto	l1109
+   740  0002CE  0A07               	xorlw	7	; case 4
+   741  0002D0  B4D8               	btfsc	status,2,c
+   742  0002D2  D793               	goto	l1123
+   743  0002D4  0A01               	xorlw	1	; case 5
+   744  0002D6  0012               	return	
+   745  0002D8                     __end_of_loop:
+   746                           	opt stack 0
+   747                           tblptru	equ	0xFF8
+   748                           postinc0	equ	0xFEE
+   749                           wreg	equ	0xFE8
+   750                           status	equ	0xFD8
+   751                           
+   752 ;; *************** function _setStatus *****************
+   753 ;; Defined at:
+   754 ;;		line 20 in file "main.c"
+   755 ;; Parameters:    Size  Location     Type
+   756 ;;  s               2   14[COMRAM] int 
+   757 ;; Auto vars:     Size  Location     Type
+   758 ;;		None
+   759 ;; Return value:  Size  Location     Type
+   760 ;;                  1    wreg      void 
+   761 ;; Registers used:
+   762 ;;		wreg, status,2
+   763 ;; Tracked objects:
+   764 ;;		On entry : 0/0
+   765 ;;		On exit  : 0/0
+   766 ;;		Unchanged: 0/0
+   767 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   768 ;;      Params:         2       0       0       0       0       0       0       0       0
+   769 ;;      Locals:         0       0       0       0       0       0       0       0       0
+   770 ;;      Temps:          0       0       0       0       0       0       0       0       0
+   771 ;;      Totals:         2       0       0       0       0       0       0       0       0
+   772 ;;Total ram usage:        2 bytes
+   773 ;; Hardware stack levels used:    1
+   774 ;; Hardware stack levels required when called:    2
+   775 ;; This function calls:
+   776 ;;		Nothing
+   777 ;; This function is called by:
+   778 ;;		_loop
+   779 ;; This function uses a non-reentrant model
+   780 ;;
+   781                           
+   782                           	psect	text2
+   783  000648                     __ptext2:
+   784                           	opt stack 0
+   785  000648                     _setStatus:
+   786                           	opt stack 27
+   787                           
+   788                           ;main.c: 21: status = s;
+   789                           
+   790                           ;incstack = 0
+   791  000648  C00F  F032         	movff	setStatus@s,_status
+   792  00064C  C010  F033         	movff	setStatus@s+1,_status+1
+   793                           
+   794                           ;main.c: 22: flagStatus = 1;
+   795  000650  0E01               	movlw	1
+   796  000652  6E34               	movwf	_flagStatus,c
+   797  000654  0012               	return		;funcret
+   798  000656                     __end_of_setStatus:
+   799                           	opt stack 0
+   800                           tblptru	equ	0xFF8
+   801                           postinc0	equ	0xFEE
+   802                           wreg	equ	0xFE8
+   803                           status	equ	0xFD8
+   804                           
+   805 ;; *************** function _setMotors *****************
+   806 ;; Defined at:
+   807 ;;		line 44 in file "motors.c"
+   808 ;; Parameters:    Size  Location     Type
+   809 ;;  left            2   26[COMRAM] int 
+   810 ;;  right           2   28[COMRAM] int 
+   811 ;; Auto vars:     Size  Location     Type
+   812 ;;		None
+   813 ;; Return value:  Size  Location     Type
+   814 ;;                  1    wreg      void 
+   815 ;; Registers used:
+   816 ;;		wreg, status,2, status,0, cstack
+   817 ;; Tracked objects:
+   818 ;;		On entry : 0/0
+   819 ;;		On exit  : 0/0
+   820 ;;		Unchanged: 0/0
+   821 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   822 ;;      Params:         4       0       0       0       0       0       0       0       0
+   823 ;;      Locals:         0       0       0       0       0       0       0       0       0
+   824 ;;      Temps:          0       0       0       0       0       0       0       0       0
+   825 ;;      Totals:         4       0       0       0       0       0       0       0       0
+   826 ;;Total ram usage:        4 bytes
+   827 ;; Hardware stack levels used:    1
+   828 ;; Hardware stack levels required when called:    4
+   829 ;; This function calls:
+   830 ;;		_setLeftMotor
+   831 ;;		_setRightMotor
+   832 ;; This function is called by:
+   833 ;;		_loop
+   834 ;; This function uses a non-reentrant model
+   835 ;;
+   836                           
+   837                           	psect	text3
+   838  00060A                     __ptext3:
+   839                           	opt stack 0
+   840  00060A                     _setMotors:
+   841                           	opt stack 25
+   842                           
+   843                           ;motors.c: 45: setLeftMotor(left);
+   844                           
+   845                           ;incstack = 0
+   846  00060A  C01B  F017         	movff	setMotors@left,setLeftMotor@speed
+   847  00060E  C01C  F018         	movff	setMotors@left+1,setLeftMotor@speed+1
+   848  000612  EC6C  F001         	call	_setLeftMotor	;wreg free
+   849                           
+   850                           ;motors.c: 46: setRightMotor(right);
+   851  000616  C01D  F017         	movff	setMotors@right,setRightMotor@speed
+   852  00061A  C01E  F018         	movff	setMotors@right+1,setRightMotor@speed+1
+   853  00061E  ECD1  F001         	call	_setRightMotor	;wreg free
+   854  000622  0012               	return		;funcret
+   855  000624                     __end_of_setMotors:
+   856                           	opt stack 0
+   857                           tblptru	equ	0xFF8
+   858                           postinc0	equ	0xFEE
+   859                           wreg	equ	0xFE8
+   860                           status	equ	0xFD8
+   861                           
+   862 ;; *************** function _setRightMotor *****************
+   863 ;; Defined at:
+   864 ;;		line 59 in file "motors.c"
+   865 ;; Parameters:    Size  Location     Type
+   866 ;;  speed           2   22[COMRAM] int 
+   867 ;; Auto vars:     Size  Location     Type
+   868 ;;		None
+   869 ;; Return value:  Size  Location     Type
+   870 ;;                  1    wreg      void 
+   871 ;; Registers used:
+   872 ;;		wreg, status,2, status,0, cstack
+   873 ;; Tracked objects:
+   874 ;;		On entry : 0/0
+   875 ;;		On exit  : 0/0
+   876 ;;		Unchanged: 0/0
+   877 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   878 ;;      Params:         2       0       0       0       0       0       0       0       0
+   879 ;;      Locals:         0       0       0       0       0       0       0       0       0
+   880 ;;      Temps:          2       0       0       0       0       0       0       0       0
+   881 ;;      Totals:         4       0       0       0       0       0       0       0       0
+   882 ;;Total ram usage:        4 bytes
+   883 ;; Hardware stack levels used:    1
+   884 ;; Hardware stack levels required when called:    3
+   885 ;; This function calls:
+   886 ;;		___awdiv
+   887 ;; This function is called by:
+   888 ;;		_setMotors
+   889 ;; This function uses a non-reentrant model
+   890 ;;
+   891                           
+   892                           	psect	text4
+   893  0003A2                     __ptext4:
+   894                           	opt stack 0
+   895  0003A2                     _setRightMotor:
+   896                           	opt stack 25
+   897                           
+   898                           ;motors.c: 60: LATBbits.LATB1 = speed >= 0;
+   899                           
+   900                           ;incstack = 0
+   901  0003A2  BE18               	btfsc	setRightMotor@speed+1,7,c
+   902  0003A4  D003               	goto	u630
+   903  0003A6  6A19               	clrf	??_setRightMotor& (0+255),c
+   904  0003A8  2A19               	incf	??_setRightMotor& (0+255),f,c
+   905  0003AA  D001               	goto	u648
+   906  0003AC                     u630:
+   907  0003AC  6A19               	clrf	??_setRightMotor& (0+255),c
+   908  0003AE                     u648:
+   909  0003AE  4619               	rlncf	??_setRightMotor,f,c
+   910  0003B0  508A               	movf	3978,w,c	;volatile
+   911  0003B2  1819               	xorwf	??_setRightMotor,w,c
+   912  0003B4  0BFD               	andlw	-3
+   913  0003B6  1819               	xorwf	??_setRightMotor,w,c
+   914  0003B8  6E8A               	movwf	3978,c	;volatile
+   915                           
+   916                           ;motors.c: 61: LATBbits.LATB0 = speed <= 0;
+   917  0003BA  BE18               	btfsc	setRightMotor@speed+1,7,c
+   918  0003BC  D005               	goto	u651
+   919  0003BE  5018               	movf	setRightMotor@speed+1,w,c
+   920  0003C0  E106               	bnz	u650
+   921  0003C2  0417               	decf	setRightMotor@speed,w,c
+   922  0003C4  B0D8               	btfsc	status,0,c
+   923  0003C6  D003               	goto	u650
+   924  0003C8                     u651:
+   925  0003C8  6A19               	clrf	??_setRightMotor& (0+255),c
+   926  0003CA  2A19               	incf	??_setRightMotor& (0+255),f,c
+   927  0003CC  D001               	goto	u668
+   928  0003CE                     u650:
+   929  0003CE  6A19               	clrf	??_setRightMotor& (0+255),c
+   930  0003D0                     u668:
+   931  0003D0  508A               	movf	3978,w,c	;volatile
+   932  0003D2  1819               	xorwf	??_setRightMotor,w,c
+   933  0003D4  0BFE               	andlw	-2
+   934  0003D6  1819               	xorwf	??_setRightMotor,w,c
+   935  0003D8  6E8A               	movwf	3978,c	;volatile
+   936                           
+   937                           ;motors.c: 62: if(speed < 0) speed = -speed;
+   938  0003DA  AE18               	btfss	setRightMotor@speed+1,7,c
+   939  0003DC  D004               	goto	l1043
+   940  0003DE  6C17               	negf	setRightMotor@speed,c
+   941  0003E0  1E18               	comf	setRightMotor@speed+1,f,c
+   942  0003E2  B0D8               	btfsc	status,0,c
+   943  0003E4  2A18               	incf	setRightMotor@speed+1,f,c
+   944  0003E6                     l1043:
+   945                           
+   946                           ;motors.c: 63: if(speed > 1000 || speed == 0) speed = 1000;
+   947  0003E6  BE18               	btfsc	setRightMotor@speed+1,7,c
+   948  0003E8  D006               	goto	l1045
+   949  0003EA  0EE9               	movlw	233
+   950  0003EC  5C17               	subwf	setRightMotor@speed,w,c
+   951  0003EE  0E03               	movlw	3
+   952  0003F0  5818               	subwfb	setRightMotor@speed+1,w,c
+   953  0003F2  B0D8               	btfsc	status,0,c
+   954  0003F4  D004               	goto	l1047
+   955  0003F6                     l1045:
+   956  0003F6  5017               	movf	setRightMotor@speed,w,c
+   957  0003F8  1018               	iorwf	setRightMotor@speed+1,w,c
+   958  0003FA  A4D8               	btfss	status,2,c
+   959  0003FC  D004               	goto	l1049
+   960  0003FE                     l1047:
+   961  0003FE  0E03               	movlw	3
+   962  000400  6E18               	movwf	setRightMotor@speed+1,c
+   963  000402  0EE8               	movlw	232
+   964  000404  6E17               	movwf	setRightMotor@speed,c
+   965  000406                     l1049:
+   966                           
+   967                           ;motors.c: 64: speed = speed * 1024 / 1000;
+   968  000406  C017  F019         	movff	setRightMotor@speed,??_setRightMotor
+   969  00040A  C018  F01A         	movff	setRightMotor@speed+1,??_setRightMotor+1
+   970  00040E  0E0A               	movlw	10
+   971  000410                     u705:
+   972  000410  90D8               	bcf	status,0,c
+   973  000412  3619               	rlcf	??_setRightMotor,f,c
+   974  000414  361A               	rlcf	??_setRightMotor+1,f,c
+   975  000416  2EE8               	decfsz	wreg,f,c
+   976  000418  D7FB               	goto	u705
+   977  00041A  C019  F00F         	movff	??_setRightMotor,___awdiv@dividend
+   978  00041E  C01A  F010         	movff	??_setRightMotor+1,___awdiv@dividend+1
+   979  000422  0E03               	movlw	3
+   980  000424  6E12               	movwf	___awdiv@divisor+1,c
+   981  000426  0EE8               	movlw	232
+   982  000428  6E11               	movwf	___awdiv@divisor,c
+   983  00042A  EC32  F002         	call	___awdiv	;wreg free
+   984  00042E  C00F  F017         	movff	?___awdiv,setRightMotor@speed
+   985  000432  C010  F018         	movff	?___awdiv+1,setRightMotor@speed+1
+   986                           
+   987                           ;motors.c: 65: CCP1CONbits.DC1B = speed & 3;
+   988  000436  C017  F019         	movff	setRightMotor@speed,??_setRightMotor
+   989  00043A  0E03               	movlw	3
+   990  00043C  1619               	andwf	??_setRightMotor,f,c
+   991  00043E  3A19               	swapf	??_setRightMotor,f,c
+   992  000440  50BD               	movf	4029,w,c	;volatile
+   993  000442  1819               	xorwf	??_setRightMotor,w,c
+   994  000444  0BCF               	andlw	-49
+   995  000446  1819               	xorwf	??_setRightMotor,w,c
+   996  000448  6EBD               	movwf	4029,c	;volatile
+   997                           
+   998                           ;motors.c: 66: CCPR1L = speed >> 2;
+   999  00044A  C017  F019         	movff	setRightMotor@speed,??_setRightMotor
+  1000  00044E  C018  F01A         	movff	setRightMotor@speed+1,??_setRightMotor+1
+  1001  000452  341A               	rlcf	??_setRightMotor+1,w,c
+  1002  000454  321A               	rrcf	??_setRightMotor+1,f,c
+  1003  000456  3219               	rrcf	??_setRightMotor,f,c
+  1004  000458  341A               	rlcf	??_setRightMotor+1,w,c
+  1005  00045A  321A               	rrcf	??_setRightMotor+1,f,c
+  1006  00045C  3219               	rrcf	??_setRightMotor,f,c
+  1007  00045E  5019               	movf	??_setRightMotor,w,c
+  1008  000460  6EBE               	movwf	4030,c	;volatile
+  1009  000462  0012               	return		;funcret
+  1010  000464                     __end_of_setRightMotor:
+  1011                           	opt stack 0
+  1012                           tblptru	equ	0xFF8
+  1013                           postinc0	equ	0xFEE
+  1014                           wreg	equ	0xFE8
+  1015                           status	equ	0xFD8
+  1016                           
+  1017 ;; *************** function _setLeftMotor *****************
+  1018 ;; Defined at:
+  1019 ;;		line 49 in file "motors.c"
+  1020 ;; Parameters:    Size  Location     Type
+  1021 ;;  speed           2   22[COMRAM] int 
+  1022 ;; Auto vars:     Size  Location     Type
+  1023 ;;		None
+  1024 ;; Return value:  Size  Location     Type
+  1025 ;;                  1    wreg      void 
+  1026 ;; Registers used:
+  1027 ;;		wreg, status,2, status,0, cstack
+  1028 ;; Tracked objects:
+  1029 ;;		On entry : 0/0
+  1030 ;;		On exit  : 0/0
+  1031 ;;		Unchanged: 0/0
+  1032 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1033 ;;      Params:         2       0       0       0       0       0       0       0       0
+  1034 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1035 ;;      Temps:          2       0       0       0       0       0       0       0       0
+  1036 ;;      Totals:         4       0       0       0       0       0       0       0       0
+  1037 ;;Total ram usage:        4 bytes
+  1038 ;; Hardware stack levels used:    1
+  1039 ;; Hardware stack levels required when called:    3
+  1040 ;; This function calls:
+  1041 ;;		___awdiv
+  1042 ;; This function is called by:
+  1043 ;;		_setMotors
+  1044 ;; This function uses a non-reentrant model
+  1045 ;;
+  1046                           
+  1047                           	psect	text5
+  1048  0002D8                     __ptext5:
+  1049                           	opt stack 0
+  1050  0002D8                     _setLeftMotor:
+  1051                           	opt stack 25
+  1052                           
+  1053                           ;motors.c: 50: LATCbits.LATC6 = speed >= 0;
+  1054                           
+  1055                           ;incstack = 0
+  1056  0002D8  BE18               	btfsc	setLeftMotor@speed+1,7,c
+  1057  0002DA  D003               	goto	u550
+  1058  0002DC  6A19               	clrf	??_setLeftMotor& (0+255),c
+  1059  0002DE  2A19               	incf	??_setLeftMotor& (0+255),f,c
+  1060  0002E0  D001               	goto	u568
+  1061  0002E2                     u550:
+  1062  0002E2  6A19               	clrf	??_setLeftMotor& (0+255),c
+  1063  0002E4                     u568:
+  1064  0002E4  3A19               	swapf	??_setLeftMotor,f,c
+  1065  0002E6  4619               	rlncf	??_setLeftMotor,f,c
+  1066  0002E8  4619               	rlncf	??_setLeftMotor,f,c
+  1067  0002EA  508B               	movf	3979,w,c	;volatile
+  1068  0002EC  1819               	xorwf	??_setLeftMotor,w,c
+  1069  0002EE  0BBF               	andlw	-65
+  1070  0002F0  1819               	xorwf	??_setLeftMotor,w,c
+  1071  0002F2  6E8B               	movwf	3979,c	;volatile
+  1072                           
+  1073                           ;motors.c: 51: LATCbits.LATC7 = speed <= 0;
+  1074  0002F4  BE18               	btfsc	setLeftMotor@speed+1,7,c
+  1075  0002F6  D005               	goto	u571
+  1076  0002F8  5018               	movf	setLeftMotor@speed+1,w,c
+  1077  0002FA  E106               	bnz	u570
+  1078  0002FC  0417               	decf	setLeftMotor@speed,w,c
+  1079  0002FE  B0D8               	btfsc	status,0,c
+  1080  000300  D003               	goto	u570
+  1081  000302                     u571:
+  1082  000302  6A19               	clrf	??_setLeftMotor& (0+255),c
+  1083  000304  2A19               	incf	??_setLeftMotor& (0+255),f,c
+  1084  000306  D001               	goto	u588
+  1085  000308                     u570:
+  1086  000308  6A19               	clrf	??_setLeftMotor& (0+255),c
+  1087  00030A                     u588:
+  1088  00030A  3219               	rrcf	??_setLeftMotor,f,c
+  1089  00030C  3219               	rrcf	??_setLeftMotor,f,c
+  1090  00030E  508B               	movf	3979,w,c	;volatile
+  1091  000310  1819               	xorwf	??_setLeftMotor,w,c
+  1092  000312  0B7F               	andlw	-129
+  1093  000314  1819               	xorwf	??_setLeftMotor,w,c
+  1094  000316  6E8B               	movwf	3979,c	;volatile
+  1095                           
+  1096                           ;motors.c: 52: if(speed < 0) speed = -speed;
+  1097  000318  AE18               	btfss	setLeftMotor@speed+1,7,c
+  1098  00031A  D004               	goto	l1027
+  1099  00031C  6C17               	negf	setLeftMotor@speed,c
+  1100  00031E  1E18               	comf	setLeftMotor@speed+1,f,c
+  1101  000320  B0D8               	btfsc	status,0,c
+  1102  000322  2A18               	incf	setLeftMotor@speed+1,f,c
+  1103  000324                     l1027:
+  1104                           
+  1105                           ;motors.c: 53: if(speed > 1000 || speed == 0) speed = 1000;
+  1106  000324  BE18               	btfsc	setLeftMotor@speed+1,7,c
+  1107  000326  D006               	goto	l1029
+  1108  000328  0EE9               	movlw	233
+  1109  00032A  5C17               	subwf	setLeftMotor@speed,w,c
+  1110  00032C  0E03               	movlw	3
+  1111  00032E  5818               	subwfb	setLeftMotor@speed+1,w,c
+  1112  000330  B0D8               	btfsc	status,0,c
+  1113  000332  D004               	goto	l1031
+  1114  000334                     l1029:
+  1115  000334  5017               	movf	setLeftMotor@speed,w,c
+  1116  000336  1018               	iorwf	setLeftMotor@speed+1,w,c
+  1117  000338  A4D8               	btfss	status,2,c
+  1118  00033A  D004               	goto	l1033
+  1119  00033C                     l1031:
+  1120  00033C  0E03               	movlw	3
+  1121  00033E  6E18               	movwf	setLeftMotor@speed+1,c
+  1122  000340  0EE8               	movlw	232
+  1123  000342  6E17               	movwf	setLeftMotor@speed,c
+  1124  000344                     l1033:
+  1125                           
+  1126                           ;motors.c: 54: speed = speed * 1024 / 1000;
+  1127  000344  C017  F019         	movff	setLeftMotor@speed,??_setLeftMotor
+  1128  000348  C018  F01A         	movff	setLeftMotor@speed+1,??_setLeftMotor+1
+  1129  00034C  0E0A               	movlw	10
+  1130  00034E                     u625:
+  1131  00034E  90D8               	bcf	status,0,c
+  1132  000350  3619               	rlcf	??_setLeftMotor,f,c
+  1133  000352  361A               	rlcf	??_setLeftMotor+1,f,c
+  1134  000354  2EE8               	decfsz	wreg,f,c
+  1135  000356  D7FB               	goto	u625
+  1136  000358  C019  F00F         	movff	??_setLeftMotor,___awdiv@dividend
+  1137  00035C  C01A  F010         	movff	??_setLeftMotor+1,___awdiv@dividend+1
+  1138  000360  0E03               	movlw	3
+  1139  000362  6E12               	movwf	___awdiv@divisor+1,c
+  1140  000364  0EE8               	movlw	232
+  1141  000366  6E11               	movwf	___awdiv@divisor,c
+  1142  000368  EC32  F002         	call	___awdiv	;wreg free
+  1143  00036C  C00F  F017         	movff	?___awdiv,setLeftMotor@speed
+  1144  000370  C010  F018         	movff	?___awdiv+1,setLeftMotor@speed+1
+  1145                           
+  1146                           ;motors.c: 55: CCP2CONbits.DC2B = speed & 3;
+  1147  000374  C017  F019         	movff	setLeftMotor@speed,??_setLeftMotor
+  1148  000378  0E03               	movlw	3
+  1149  00037A  1619               	andwf	??_setLeftMotor,f,c
+  1150  00037C  3A19               	swapf	??_setLeftMotor,f,c
+  1151  00037E  50BA               	movf	4026,w,c	;volatile
+  1152  000380  1819               	xorwf	??_setLeftMotor,w,c
+  1153  000382  0BCF               	andlw	-49
+  1154  000384  1819               	xorwf	??_setLeftMotor,w,c
+  1155  000386  6EBA               	movwf	4026,c	;volatile
+  1156                           
+  1157                           ;motors.c: 56: CCPR2L = speed >> 2;
+  1158  000388  C017  F019         	movff	setLeftMotor@speed,??_setLeftMotor
+  1159  00038C  C018  F01A         	movff	setLeftMotor@speed+1,??_setLeftMotor+1
+  1160  000390  341A               	rlcf	??_setLeftMotor+1,w,c
+  1161  000392  321A               	rrcf	??_setLeftMotor+1,f,c
+  1162  000394  3219               	rrcf	??_setLeftMotor,f,c
+  1163  000396  341A               	rlcf	??_setLeftMotor+1,w,c
+  1164  000398  321A               	rrcf	??_setLeftMotor+1,f,c
+  1165  00039A  3219               	rrcf	??_setLeftMotor,f,c
+  1166  00039C  5019               	movf	??_setLeftMotor,w,c
+  1167  00039E  6EBB               	movwf	4027,c	;volatile
+  1168  0003A0  0012               	return		;funcret
+  1169  0003A2                     __end_of_setLeftMotor:
+  1170                           	opt stack 0
+  1171                           tblptru	equ	0xFF8
+  1172                           postinc0	equ	0xFEE
+  1173                           wreg	equ	0xFE8
+  1174                           status	equ	0xFD8
+  1175                           
+  1176 ;; *************** function ___awdiv *****************
+  1177 ;; Defined at:
+  1178 ;;		line 8 in file "C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\awdiv.c"
+  1179 ;; Parameters:    Size  Location     Type
+  1180 ;;  dividend        2   14[COMRAM] int 
+  1181 ;;  divisor         2   16[COMRAM] int 
+  1182 ;; Auto vars:     Size  Location     Type
+  1183 ;;  quotient        2   20[COMRAM] int 
+  1184 ;;  sign            1   19[COMRAM] unsigned char 
+  1185 ;;  counter         1   18[COMRAM] unsigned char 
+  1186 ;; Return value:  Size  Location     Type
+  1187 ;;                  2   14[COMRAM] int 
+  1188 ;; Registers used:
+  1189 ;;		wreg, status,2, status,0
+  1190 ;; Tracked objects:
+  1191 ;;		On entry : 0/0
+  1192 ;;		On exit  : 0/0
+  1193 ;;		Unchanged: 0/0
+  1194 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1195 ;;      Params:         4       0       0       0       0       0       0       0       0
+  1196 ;;      Locals:         4       0       0       0       0       0       0       0       0
+  1197 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1198 ;;      Totals:         8       0       0       0       0       0       0       0       0
+  1199 ;;Total ram usage:        8 bytes
+  1200 ;; Hardware stack levels used:    1
+  1201 ;; Hardware stack levels required when called:    2
+  1202 ;; This function calls:
+  1203 ;;		Nothing
+  1204 ;; This function is called by:
+  1205 ;;		_setLeftMotor
+  1206 ;;		_setRightMotor
+  1207 ;; This function uses a non-reentrant model
+  1208 ;;
+  1209                           
+  1210                           	psect	text6
+  1211  000464                     __ptext6:
+  1212                           	opt stack 0
+  1213  000464                     ___awdiv:
+  1214                           	opt stack 25
+  1215                           
+  1216                           ;incstack = 0
+  1217  000464  0E00               	movlw	0
+  1218  000466  6E14               	movwf	___awdiv@sign,c
+  1219  000468  AE12               	btfss	___awdiv@divisor+1,7,c
+  1220  00046A  D006               	goto	l987
+  1221  00046C  6C11               	negf	___awdiv@divisor,c
+  1222  00046E  1E12               	comf	___awdiv@divisor+1,f,c
+  1223  000470  B0D8               	btfsc	status,0,c
+  1224  000472  2A12               	incf	___awdiv@divisor+1,f,c
+  1225  000474  0E01               	movlw	1
+  1226  000476  6E14               	movwf	___awdiv@sign,c
+  1227  000478                     l987:
+  1228  000478  AE10               	btfss	___awdiv@dividend+1,7,c
+  1229  00047A  D006               	goto	l993
+  1230  00047C  6C0F               	negf	___awdiv@dividend,c
+  1231  00047E  1E10               	comf	___awdiv@dividend+1,f,c
+  1232  000480  B0D8               	btfsc	status,0,c
+  1233  000482  2A10               	incf	___awdiv@dividend+1,f,c
+  1234  000484  0E01               	movlw	1
+  1235  000486  1A14               	xorwf	___awdiv@sign,f,c
+  1236  000488                     l993:
+  1237  000488  0E00               	movlw	0
+  1238  00048A  6E16               	movwf	___awdiv@quotient+1,c
+  1239  00048C  0E00               	movlw	0
+  1240  00048E  6E15               	movwf	___awdiv@quotient,c
+  1241  000490  5011               	movf	___awdiv@divisor,w,c
+  1242  000492  1012               	iorwf	___awdiv@divisor+1,w,c
+  1243  000494  B4D8               	btfsc	status,2,c
+  1244  000496  D01C               	goto	l1015
+  1245  000498  0E01               	movlw	1
+  1246  00049A  6E13               	movwf	___awdiv@counter,c
+  1247  00049C  D004               	goto	l1001
+  1248  00049E                     l999:
+  1249  00049E  90D8               	bcf	status,0,c
+  1250  0004A0  3611               	rlcf	___awdiv@divisor,f,c
+  1251  0004A2  3612               	rlcf	___awdiv@divisor+1,f,c
+  1252  0004A4  2A13               	incf	___awdiv@counter,f,c
+  1253  0004A6                     l1001:
+  1254  0004A6  AE12               	btfss	___awdiv@divisor+1,7,c
+  1255  0004A8  D7FA               	goto	l999
+  1256  0004AA                     l1003:
+  1257  0004AA  90D8               	bcf	status,0,c
+  1258  0004AC  3615               	rlcf	___awdiv@quotient,f,c
+  1259  0004AE  3616               	rlcf	___awdiv@quotient+1,f,c
+  1260  0004B0  5011               	movf	___awdiv@divisor,w,c
+  1261  0004B2  5C0F               	subwf	___awdiv@dividend,w,c
+  1262  0004B4  5012               	movf	___awdiv@divisor+1,w,c
+  1263  0004B6  5810               	subwfb	___awdiv@dividend+1,w,c
+  1264  0004B8  A0D8               	btfss	status,0,c
+  1265  0004BA  D005               	goto	l1011
+  1266  0004BC  5011               	movf	___awdiv@divisor,w,c
+  1267  0004BE  5E0F               	subwf	___awdiv@dividend,f,c
+  1268  0004C0  5012               	movf	___awdiv@divisor+1,w,c
+  1269  0004C2  5A10               	subwfb	___awdiv@dividend+1,f,c
+  1270  0004C4  8015               	bsf	___awdiv@quotient,0,c
+  1271  0004C6                     l1011:
+  1272  0004C6  90D8               	bcf	status,0,c
+  1273  0004C8  3212               	rrcf	___awdiv@divisor+1,f,c
+  1274  0004CA  3211               	rrcf	___awdiv@divisor,f,c
+  1275  0004CC  2E13               	decfsz	___awdiv@counter,f,c
+  1276  0004CE  D7ED               	goto	l1003
+  1277  0004D0                     l1015:
+  1278  0004D0  5014               	movf	___awdiv@sign,w,c
+  1279  0004D2  B4D8               	btfsc	status,2,c
+  1280  0004D4  D004               	goto	l1019
+  1281  0004D6  6C15               	negf	___awdiv@quotient,c
+  1282  0004D8  1E16               	comf	___awdiv@quotient+1,f,c
+  1283  0004DA  B0D8               	btfsc	status,0,c
+  1284  0004DC  2A16               	incf	___awdiv@quotient+1,f,c
+  1285  0004DE                     l1019:
+  1286  0004DE  C015  F00F         	movff	___awdiv@quotient,?___awdiv
+  1287  0004E2  C016  F010         	movff	___awdiv@quotient+1,?___awdiv+1
+  1288  0004E6  0012               	return	
+  1289  0004E8                     __end_of___awdiv:
+  1290                           	opt stack 0
+  1291                           tblptru	equ	0xFF8
+  1292                           postinc0	equ	0xFEE
+  1293                           wreg	equ	0xFE8
+  1294                           status	equ	0xFD8
+  1295                           
+  1296 ;; *************** function _setLEDs *****************
+  1297 ;; Defined at:
+  1298 ;;		line 25 in file "ui.c"
+  1299 ;; Parameters:    Size  Location     Type
+  1300 ;;  r               1    wreg     unsigned char 
+  1301 ;;  y               1   14[COMRAM] unsigned char 
+  1302 ;;  g               1   15[COMRAM] unsigned char 
+  1303 ;; Auto vars:     Size  Location     Type
+  1304 ;;  r               1   16[COMRAM] unsigned char 
+  1305 ;; Return value:  Size  Location     Type
+  1306 ;;                  1    wreg      void 
+  1307 ;; Registers used:
+  1308 ;;		wreg
+  1309 ;; Tracked objects:
+  1310 ;;		On entry : 0/0
+  1311 ;;		On exit  : 0/0
+  1312 ;;		Unchanged: 0/0
+  1313 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1314 ;;      Params:         2       0       0       0       0       0       0       0       0
+  1315 ;;      Locals:         1       0       0       0       0       0       0       0       0
+  1316 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1317 ;;      Totals:         3       0       0       0       0       0       0       0       0
+  1318 ;;Total ram usage:        3 bytes
+  1319 ;; Hardware stack levels used:    1
+  1320 ;; Hardware stack levels required when called:    2
+  1321 ;; This function calls:
+  1322 ;;		Nothing
+  1323 ;; This function is called by:
+  1324 ;;		_loop
+  1325 ;; This function uses a non-reentrant model
+  1326 ;;
+  1327                           
+  1328                           	psect	text7
+  1329  0005CE                     __ptext7:
+  1330                           	opt stack 0
+  1331  0005CE                     _setLEDs:
+  1332                           	opt stack 27
+  1333                           
+  1334                           ;incstack = 0
+  1335                           ;setLEDs@r stored from wreg
+  1336  0005CE  6E11               	movwf	setLEDs@r,c
+  1337                           
+  1338                           ;ui.c: 26: LATAbits.LATA4 = (r);
+  1339  0005D0  B011               	btfsc	setLEDs@r,0,c
+  1340  0005D2  D002               	bra	u715
+  1341  0005D4  9889               	bcf	3977,4,c	;volatile
+  1342  0005D6  D001               	bra	u716
+  1343  0005D8                     u715:
+  1344  0005D8  8889               	bsf	3977,4,c	;volatile
+  1345  0005DA                     u716:
+  1346                           
+  1347                           ;ui.c: 27: LATAbits.LATA3 = (y);
+  1348  0005DA  B00F               	btfsc	setLEDs@y,0,c
+  1349  0005DC  D002               	bra	u725
+  1350  0005DE  9689               	bcf	3977,3,c	;volatile
+  1351  0005E0  D001               	bra	u726
+  1352  0005E2                     u725:
+  1353  0005E2  8689               	bsf	3977,3,c	;volatile
+  1354  0005E4                     u726:
+  1355                           
+  1356                           ;ui.c: 28: LATAbits.LATA2 = (g);
+  1357  0005E4  B010               	btfsc	setLEDs@g,0,c
+  1358  0005E6  D002               	bra	u735
+  1359  0005E8  9489               	bcf	3977,2,c	;volatile
+  1360  0005EA  D001               	bra	u736
+  1361  0005EC                     u735:
+  1362  0005EC  8489               	bsf	3977,2,c	;volatile
+  1363  0005EE                     u736:
+  1364  0005EE  0012               	return		;funcret
+  1365  0005F0                     __end_of_setLEDs:
+  1366                           	opt stack 0
+  1367                           tblptru	equ	0xFF8
+  1368                           postinc0	equ	0xFEE
+  1369                           wreg	equ	0xFE8
+  1370                           status	equ	0xFD8
+  1371                           
+  1372 ;; *************** function _newStatus *****************
+  1373 ;; Defined at:
+  1374 ;;		line 25 in file "main.c"
+  1375 ;; Parameters:    Size  Location     Type
+  1376 ;;		None
+  1377 ;; Auto vars:     Size  Location     Type
+  1378 ;;  x               1   14[COMRAM] unsigned char 
+  1379 ;; Return value:  Size  Location     Type
+  1380 ;;                  1    wreg      unsigned char 
+  1381 ;; Registers used:
+  1382 ;;		wreg, status,2
+  1383 ;; Tracked objects:
+  1384 ;;		On entry : 0/0
+  1385 ;;		On exit  : 0/0
+  1386 ;;		Unchanged: 0/0
+  1387 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1388 ;;      Params:         0       0       0       0       0       0       0       0       0
+  1389 ;;      Locals:         1       0       0       0       0       0       0       0       0
+  1390 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1391 ;;      Totals:         1       0       0       0       0       0       0       0       0
+  1392 ;;Total ram usage:        1 bytes
+  1393 ;; Hardware stack levels used:    1
+  1394 ;; Hardware stack levels required when called:    2
+  1395 ;; This function calls:
+  1396 ;;		Nothing
+  1397 ;; This function is called by:
+  1398 ;;		_loop
+  1399 ;; This function uses a non-reentrant model
+  1400 ;;
+  1401                           
+  1402                           	psect	text8
+  1403  000656                     __ptext8:
+  1404                           	opt stack 0
+  1405  000656                     _newStatus:
+  1406                           	opt stack 27
+  1407                           
+  1408                           ;main.c: 26: char x = flagStatus;
+  1409                           
+  1410                           ;incstack = 0
+  1411  000656  C034  F00F         	movff	_flagStatus,newStatus@x
+  1412                           
+  1413                           ;main.c: 27: flagStatus = 0;
+  1414  00065A  0E00               	movlw	0
+  1415  00065C  6E34               	movwf	_flagStatus,c
+  1416                           
+  1417                           ;main.c: 28: return x;
+  1418  00065E  500F               	movf	newStatus@x,w,c
+  1419  000660  0012               	return	
+  1420  000662                     __end_of_newStatus:
+  1421                           	opt stack 0
+  1422                           tblptru	equ	0xFF8
+  1423                           postinc0	equ	0xFEE
+  1424                           wreg	equ	0xFE8
+  1425                           status	equ	0xFD8
+  1426                           
+  1427 ;; *************** function _millis *****************
+  1428 ;; Defined at:
+  1429 ;;		line 7 in file "timer.c"
+  1430 ;; Parameters:    Size  Location     Type
+  1431 ;;		None
+  1432 ;; Auto vars:     Size  Location     Type
+  1433 ;;		None
+  1434 ;; Return value:  Size  Location     Type
+  1435 ;;                  4   14[COMRAM] unsigned long 
+  1436 ;; Registers used:
+  1437 ;;		None
+  1438 ;; Tracked objects:
+  1439 ;;		On entry : 0/0
+  1440 ;;		On exit  : 0/0
+  1441 ;;		Unchanged: 0/0
+  1442 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1443 ;;      Params:         4       0       0       0       0       0       0       0       0
+  1444 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1445 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1446 ;;      Totals:         4       0       0       0       0       0       0       0       0
+  1447 ;;Total ram usage:        4 bytes
+  1448 ;; Hardware stack levels used:    1
+  1449 ;; Hardware stack levels required when called:    2
+  1450 ;; This function calls:
+  1451 ;;		Nothing
+  1452 ;; This function is called by:
+  1453 ;;		_loop
+  1454 ;; This function uses a non-reentrant model
+  1455 ;;
+  1456                           
+  1457                           	psect	text9
+  1458  000624                     __ptext9:
+  1459                           	opt stack 0
+  1460  000624                     _millis:
+  1461                           	opt stack 27
+  1462                           
+  1463                           ;timer.c: 8: return millisCounter;
+  1464                           
+  1465                           ;incstack = 0
+  1466  000624  C02C  F00F         	movff	_millisCounter,?_millis
+  1467  000628  C02D  F010         	movff	_millisCounter+1,?_millis+1
+  1468  00062C  C02E  F011         	movff	_millisCounter+2,?_millis+2
+  1469  000630  C02F  F012         	movff	_millisCounter+3,?_millis+3
+  1470  000634  0012               	return		;funcret
+  1471  000636                     __end_of_millis:
+  1472                           	opt stack 0
+  1473                           tblptru	equ	0xFF8
+  1474                           postinc0	equ	0xFEE
+  1475                           wreg	equ	0xFE8
+  1476                           status	equ	0xFD8
+  1477                           
+  1478 ;; *************** function _initUI *****************
+  1479 ;; Defined at:
+  1480 ;;		line 11 in file "ui.c"
+  1481 ;; Parameters:    Size  Location     Type
+  1482 ;;		None
+  1483 ;; Auto vars:     Size  Location     Type
+  1484 ;;		None
+  1485 ;; Return value:  Size  Location     Type
+  1486 ;;                  1    wreg      void 
+  1487 ;; Registers used:
+  1488 ;;		None
+  1489 ;; Tracked objects:
+  1490 ;;		On entry : 0/0
+  1491 ;;		On exit  : 0/0
+  1492 ;;		Unchanged: 0/0
+  1493 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1494 ;;      Params:         0       0       0       0       0       0       0       0       0
+  1495 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1496 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1497 ;;      Totals:         0       0       0       0       0       0       0       0       0
+  1498 ;;Total ram usage:        0 bytes
+  1499 ;; Hardware stack levels used:    1
+  1500 ;; Hardware stack levels required when called:    2
+  1501 ;; This function calls:
+  1502 ;;		Nothing
+  1503 ;; This function is called by:
+  1504 ;;		_loop
+  1505 ;; This function uses a non-reentrant model
+  1506 ;;
+  1507                           
+  1508                           	psect	text10
+  1509  000636                     __ptext10:
+  1510                           	opt stack 0
+  1511  000636                     _initUI:
+  1512                           	opt stack 27
+  1513                           
+  1514                           ;ui.c: 12: TRISAbits.RA4 = 0;
+  1515                           
+  1516                           ;incstack = 0
+  1517  000636  9892               	bcf	3986,4,c	;volatile
+  1518                           
+  1519                           ;ui.c: 13: LATAbits.LATA4 = 0;
+  1520  000638  9889               	bcf	3977,4,c	;volatile
+  1521                           
+  1522                           ;ui.c: 15: TRISAbits.RA3 = 0;
+  1523  00063A  9692               	bcf	3986,3,c	;volatile
+  1524                           
+  1525                           ;ui.c: 16: LATAbits.LATA3 = 0;
+  1526  00063C  9689               	bcf	3977,3,c	;volatile
+  1527                           
+  1528                           ;ui.c: 18: TRISAbits.RA2 = 0;
+  1529  00063E  9492               	bcf	3986,2,c	;volatile
+  1530                           
+  1531                           ;ui.c: 19: LATAbits.LATA2 = 0;
+  1532  000640  9489               	bcf	3977,2,c	;volatile
+  1533                           
+  1534                           ;ui.c: 21: TRISAbits.RA1 = 1;
+  1535  000642  8292               	bsf	3986,1,c	;volatile
+  1536                           
+  1537                           ;ui.c: 22: TRISAbits.RA0 = 1;
+  1538  000644  8092               	bsf	3986,0,c	;volatile
+  1539  000646  0012               	return		;funcret
+  1540  000648                     __end_of_initUI:
+  1541                           	opt stack 0
+  1542                           tblptru	equ	0xFF8
+  1543                           postinc0	equ	0xFEE
+  1544                           wreg	equ	0xFE8
+  1545                           status	equ	0xFD8
+  1546                           
+  1547 ;; *************** function _initTimer *****************
+  1548 ;; Defined at:
+  1549 ;;		line 22 in file "timer.c"
+  1550 ;; Parameters:    Size  Location     Type
+  1551 ;;		None
+  1552 ;; Auto vars:     Size  Location     Type
+  1553 ;;		None
+  1554 ;; Return value:  Size  Location     Type
+  1555 ;;                  1    wreg      void 
+  1556 ;; Registers used:
+  1557 ;;		wreg, status,2
+  1558 ;; Tracked objects:
+  1559 ;;		On entry : 0/0
+  1560 ;;		On exit  : 0/0
+  1561 ;;		Unchanged: 0/0
+  1562 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1563 ;;      Params:         0       0       0       0       0       0       0       0       0
+  1564 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1565 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1566 ;;      Totals:         0       0       0       0       0       0       0       0       0
+  1567 ;;Total ram usage:        0 bytes
+  1568 ;; Hardware stack levels used:    1
+  1569 ;; Hardware stack levels required when called:    2
+  1570 ;; This function calls:
+  1571 ;;		Nothing
+  1572 ;; This function is called by:
+  1573 ;;		_loop
+  1574 ;; This function uses a non-reentrant model
+  1575 ;;
+  1576                           
+  1577                           	psect	text11
+  1578  000662                     __ptext11:
+  1579                           	opt stack 0
+  1580  000662                     _initTimer:
+  1581                           	opt stack 27
+  1582                           
+  1583                           ;timer.c: 23: INTCONbits.TMR0IF = 0;
+  1584                           
+  1585                           ;incstack = 0
+  1586  000662  94F2               	bcf	intcon,2,c	;volatile
+  1587                           
+  1588                           ;timer.c: 24: INTCONbits.TMR0IE = 1;
+  1589  000664  8AF2               	bsf	intcon,5,c	;volatile
+  1590                           
+  1591                           ;timer.c: 25: T0CON = 0xC4;
+  1592  000666  0EC4               	movlw	196
+  1593  000668  6ED5               	movwf	4053,c	;volatile
+  1594  00066A  0012               	return		;funcret
+  1595  00066C                     __end_of_initTimer:
+  1596                           	opt stack 0
+  1597                           tblptru	equ	0xFF8
+  1598                           intcon	equ	0xFF2
+  1599                           postinc0	equ	0xFEE
+  1600                           wreg	equ	0xFE8
+  1601                           status	equ	0xFD8
+  1602                           
+  1603 ;; *************** function _initMotors *****************
+  1604 ;; Defined at:
+  1605 ;;		line 17 in file "motors.c"
+  1606 ;; Parameters:    Size  Location     Type
+  1607 ;;		None
+  1608 ;; Auto vars:     Size  Location     Type
+  1609 ;;		None
+  1610 ;; Return value:  Size  Location     Type
+  1611 ;;                  1    wreg      void 
+  1612 ;; Registers used:
+  1613 ;;		wreg, status,2
+  1614 ;; Tracked objects:
+  1615 ;;		On entry : 0/0
+  1616 ;;		On exit  : 0/0
+  1617 ;;		Unchanged: 0/0
+  1618 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1619 ;;      Params:         0       0       0       0       0       0       0       0       0
+  1620 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1621 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1622 ;;      Totals:         0       0       0       0       0       0       0       0       0
+  1623 ;;Total ram usage:        0 bytes
+  1624 ;; Hardware stack levels used:    1
+  1625 ;; Hardware stack levels required when called:    2
+  1626 ;; This function calls:
+  1627 ;;		Nothing
+  1628 ;; This function is called by:
+  1629 ;;		_loop
+  1630 ;; This function uses a non-reentrant model
+  1631 ;;
+  1632                           
+  1633                           	psect	text12
+  1634  00055A                     __ptext12:
+  1635                           	opt stack 0
+  1636  00055A                     _initMotors:
+  1637                           	opt stack 27
+  1638                           
+  1639                           ;motors.c: 18: TRISBbits.TRISB1 = 0;
+  1640                           
+  1641                           ;incstack = 0
+  1642  00055A  9293               	bcf	3987,1,c	;volatile
+  1643                           
+  1644                           ;motors.c: 19: TRISBbits.TRISB0 = 0;
+  1645  00055C  9093               	bcf	3987,0,c	;volatile
+  1646                           
+  1647                           ;motors.c: 20: TRISCbits.TRISC6 = 0;
+  1648  00055E  9C94               	bcf	3988,6,c	;volatile
+  1649                           
+  1650                           ;motors.c: 21: TRISCbits.TRISC7 = 0;
+  1651  000560  9E94               	bcf	3988,7,c	;volatile
+  1652                           
+  1653                           ;motors.c: 23: LATBbits.LATB1 = 0;
+  1654  000562  928A               	bcf	3978,1,c	;volatile
+  1655                           
+  1656                           ;motors.c: 24: LATBbits.LATB0 = 0;
+  1657  000564  908A               	bcf	3978,0,c	;volatile
+  1658                           
+  1659                           ;motors.c: 25: LATCbits.LATC6 = 0;
+  1660  000566  9C8B               	bcf	3979,6,c	;volatile
+  1661                           
+  1662                           ;motors.c: 26: LATCbits.LATC7 = 0;
+  1663  000568  9E8B               	bcf	3979,7,c	;volatile
+  1664                           
+  1665                           ;motors.c: 28: TRISCbits.TRISC1 = 0;
+  1666  00056A  9294               	bcf	3988,1,c	;volatile
+  1667                           
+  1668                           ;motors.c: 29: TRISCbits.TRISC2 = 0;
+  1669  00056C  9494               	bcf	3988,2,c	;volatile
+  1670                           
+  1671                           ;motors.c: 33: PR2 = 149;
+  1672  00056E  0E95               	movlw	149
+  1673  000570  6ECB               	movwf	4043,c	;volatile
+  1674                           
+  1675                           ;motors.c: 35: CCPR1L = 0;
+  1676  000572  0E00               	movlw	0
+  1677  000574  6EBE               	movwf	4030,c	;volatile
+  1678                           
+  1679                           ;motors.c: 36: CCPR2L = 0;
+  1680  000576  0E00               	movlw	0
+  1681  000578  6EBB               	movwf	4027,c	;volatile
+  1682                           
+  1683                           ;motors.c: 37: CCP1CONbits.DC1B = 0;
+  1684  00057A  0ECF               	movlw	-49
+  1685  00057C  16BD               	andwf	4029,f,c	;volatile
+  1686                           
+  1687                           ;motors.c: 38: CCP2CONbits.DC2B = 0;
+  1688  00057E  0ECF               	movlw	-49
+  1689  000580  16BA               	andwf	4026,f,c	;volatile
+  1690                           
+  1691                           ;motors.c: 39: T2CON = 0x05;
+  1692  000582  0E05               	movlw	5
+  1693  000584  6ECA               	movwf	4042,c	;volatile
+  1694                           
+  1695                           ;motors.c: 40: CCP1CONbits.CCP1M = 0xF;
+  1696  000586  80BD               	bsf	4029,0,c	;volatile
+  1697  000588  82BD               	bsf	4029,1,c	;volatile
+  1698  00058A  84BD               	bsf	4029,2,c	;volatile
+  1699  00058C  86BD               	bsf	4029,3,c	;volatile
+  1700                           
+  1701                           ;motors.c: 41: CCP2CONbits.CCP2M = 0xF;
+  1702  00058E  80BA               	bsf	4026,0,c	;volatile
+  1703  000590  82BA               	bsf	4026,1,c	;volatile
+  1704  000592  84BA               	bsf	4026,2,c	;volatile
+  1705  000594  86BA               	bsf	4026,3,c	;volatile
+  1706  000596  0012               	return		;funcret
+  1707  000598                     __end_of_initMotors:
+  1708                           	opt stack 0
+  1709                           tblptru	equ	0xFF8
+  1710                           intcon	equ	0xFF2
+  1711                           postinc0	equ	0xFEE
+  1712                           wreg	equ	0xFE8
+  1713                           status	equ	0xFD8
+  1714                           
+  1715 ;; *************** function _initInterrupts *****************
+  1716 ;; Defined at:
+  1717 ;;		line 4 in file "etc.c"
+  1718 ;; Parameters:    Size  Location     Type
+  1719 ;;		None
+  1720 ;; Auto vars:     Size  Location     Type
+  1721 ;;		None
+  1722 ;; Return value:  Size  Location     Type
+  1723 ;;                  1    wreg      void 
+  1724 ;; Registers used:
+  1725 ;;		None
+  1726 ;; Tracked objects:
+  1727 ;;		On entry : 0/0
+  1728 ;;		On exit  : 0/0
+  1729 ;;		Unchanged: 0/0
+  1730 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1731 ;;      Params:         0       0       0       0       0       0       0       0       0
+  1732 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1733 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1734 ;;      Totals:         0       0       0       0       0       0       0       0       0
+  1735 ;;Total ram usage:        0 bytes
+  1736 ;; Hardware stack levels used:    1
+  1737 ;; Hardware stack levels required when called:    2
+  1738 ;; This function calls:
+  1739 ;;		Nothing
+  1740 ;; This function is called by:
+  1741 ;;		_loop
+  1742 ;; This function uses a non-reentrant model
+  1743 ;;
+  1744                           
+  1745                           	psect	text13
+  1746  00067C                     __ptext13:
+  1747                           	opt stack 0
+  1748  00067C                     _initInterrupts:
+  1749                           	opt stack 27
+  1750                           
+  1751                           ;etc.c: 5: INTCONbits.PEIE = 1;
+  1752                           
+  1753                           ;incstack = 0
+  1754  00067C  8CF2               	bsf	intcon,6,c	;volatile
+  1755                           
+  1756                           ;etc.c: 6: INTCONbits.GIE = 1;
+  1757  00067E  8EF2               	bsf	intcon,7,c	;volatile
+  1758  000680  0012               	return		;funcret
+  1759  000682                     __end_of_initInterrupts:
+  1760                           	opt stack 0
+  1761                           tblptru	equ	0xFF8
+  1762                           intcon	equ	0xFF2
+  1763                           postinc0	equ	0xFEE
+  1764                           wreg	equ	0xFE8
+  1765                           status	equ	0xFD8
+  1766                           
+  1767 ;; *************** function _initEtc *****************
+  1768 ;; Defined at:
+  1769 ;;		line 9 in file "etc.c"
+  1770 ;; Parameters:    Size  Location     Type
+  1771 ;;		None
+  1772 ;; Auto vars:     Size  Location     Type
+  1773 ;;		None
+  1774 ;; Return value:  Size  Location     Type
+  1775 ;;                  1    wreg      void 
+  1776 ;; Registers used:
+  1777 ;;		None
+  1778 ;; Tracked objects:
+  1779 ;;		On entry : 0/0
+  1780 ;;		On exit  : 0/0
+  1781 ;;		Unchanged: 0/0
+  1782 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1783 ;;      Params:         0       0       0       0       0       0       0       0       0
+  1784 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1785 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1786 ;;      Totals:         0       0       0       0       0       0       0       0       0
+  1787 ;;Total ram usage:        0 bytes
+  1788 ;; Hardware stack levels used:    1
+  1789 ;; Hardware stack levels required when called:    2
+  1790 ;; This function calls:
+  1791 ;;		Nothing
+  1792 ;; This function is called by:
+  1793 ;;		_loop
+  1794 ;; This function uses a non-reentrant model
+  1795 ;;
+  1796                           
+  1797                           	psect	text14
+  1798  00066C                     __ptext14:
+  1799                           	opt stack 0
+  1800  00066C                     _initEtc:
+  1801                           	opt stack 27
+  1802                           
+  1803                           ;etc.c: 10: ADCON1bits.PCFG = 0xF;
+  1804                           
+  1805                           ;incstack = 0
+  1806  00066C  80C1               	bsf	4033,0,c	;volatile
+  1807  00066E  82C1               	bsf	4033,1,c	;volatile
+  1808  000670  84C1               	bsf	4033,2,c	;volatile
+  1809  000672  86C1               	bsf	4033,3,c	;volatile
+  1810  000674  0012               	return		;funcret
+  1811  000676                     __end_of_initEtc:
+  1812                           	opt stack 0
+  1813                           tblptru	equ	0xFF8
+  1814                           intcon	equ	0xFF2
+  1815                           postinc0	equ	0xFEE
+  1816                           wreg	equ	0xFE8
+  1817                           status	equ	0xFD8
+  1818                           
+  1819 ;; *************** function _ISR *****************
+  1820 ;; Defined at:
+  1821 ;;		line 114 in file "main.c"
+  1822 ;; Parameters:    Size  Location     Type
+  1823 ;;		None
+  1824 ;; Auto vars:     Size  Location     Type
+  1825 ;;		None
+  1826 ;; Return value:  Size  Location     Type
+  1827 ;;                  1    wreg      void 
+  1828 ;; Registers used:
+  1829 ;;		wreg, status,2, status,0, cstack
+  1830 ;; Tracked objects:
+  1831 ;;		On entry : 0/0
+  1832 ;;		On exit  : 0/0
+  1833 ;;		Unchanged: 0/0
+  1834 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1835 ;;      Params:         0       0       0       0       0       0       0       0       0
+  1836 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1837 ;;      Temps:         14       0       0       0       0       0       0       0       0
+  1838 ;;      Totals:        14       0       0       0       0       0       0       0       0
+  1839 ;;Total ram usage:       14 bytes
+  1840 ;; Hardware stack levels used:    1
+  1841 ;; Hardware stack levels required when called:    1
+  1842 ;; This function calls:
+  1843 ;;		_timerInterrupt
+  1844 ;; This function is called by:
+  1845 ;;		Interrupt level 2
+  1846 ;; This function uses a non-reentrant model
+  1847 ;;
+  1848                           
+  1849                           	psect	intcode
+  1850  000008                     __pintcode:
+  1851                           	opt stack 0
+  1852  000008                     _ISR:
+  1853                           	opt stack 25
+  1854                           
+  1855                           ;incstack = 0
+  1856  000008  8235               	bsf	btemp,1,c	;set compiler interrupt flag (level 2)
+  1857  00000A  CFFA F001          	movff	pclath,??_ISR
+  1858  00000E  CFFB F002          	movff	pclatu,??_ISR+1
+  1859  000012  ED74  F002         	call	int_func,f	;refresh shadow registers
+  1860                           pclatu	equ	0xFFB
+  1861                           pclath	equ	0xFFA
+  1862                           tblptru	equ	0xFF8
+  1863                           intcon	equ	0xFF2
+  1864                           postinc0	equ	0xFEE
+  1865                           wreg	equ	0xFE8
+  1866                           status	equ	0xFD8
+  1867                           
+  1868                           	psect	intcode_body
+  1869  0004E8                     __pintcode_body:
+  1870                           	opt stack 25
+  1871  0004E8                     int_func:
+  1872                           	opt stack 25
+  1873  0004E8  0006               	pop		; remove dummy address from shadow register refresh
+  1874  0004EA  CFE9 F003          	movff	fsr0l,??_ISR+2
+  1875  0004EE  CFEA F004          	movff	fsr0h,??_ISR+3
+  1876  0004F2  CFE1 F005          	movff	fsr1l,??_ISR+4
+  1877  0004F6  CFE2 F006          	movff	fsr1h,??_ISR+5
+  1878  0004FA  CFD9 F007          	movff	fsr2l,??_ISR+6
+  1879  0004FE  CFDA F008          	movff	fsr2h,??_ISR+7
+  1880  000502  CFF3 F009          	movff	prodl,??_ISR+8
+  1881  000506  CFF4 F00A          	movff	prodh,??_ISR+9
+  1882  00050A  CFF6 F00B          	movff	tblptrl,??_ISR+10
+  1883  00050E  CFF7 F00C          	movff	tblptrh,??_ISR+11
+  1884  000512  CFF8 F00D          	movff	tblptru,??_ISR+12
+  1885  000516  CFF5 F00E          	movff	tablat,??_ISR+13
+  1886                           
+  1887                           ;main.c: 115: if(timerInterrupt()) return;
+  1888  00051A  ECCC  F002         	call	_timerInterrupt	;wreg free
+  1889  00051E  C00E  FFF5         	movff	??_ISR+13,tablat
+  1890  000522  C00D  FFF8         	movff	??_ISR+12,tblptru
+  1891  000526  C00C  FFF7         	movff	??_ISR+11,tblptrh
+  1892  00052A  C00B  FFF6         	movff	??_ISR+10,tblptrl
+  1893  00052E  C00A  FFF4         	movff	??_ISR+9,prodh
+  1894  000532  C009  FFF3         	movff	??_ISR+8,prodl
+  1895  000536  C008  FFDA         	movff	??_ISR+7,fsr2h
+  1896  00053A  C007  FFD9         	movff	??_ISR+6,fsr2l
+  1897  00053E  C006  FFE2         	movff	??_ISR+5,fsr1h
+  1898  000542  C005  FFE1         	movff	??_ISR+4,fsr1l
+  1899  000546  C004  FFEA         	movff	??_ISR+3,fsr0h
+  1900  00054A  C003  FFE9         	movff	??_ISR+2,fsr0l
+  1901  00054E  C002  FFFB         	movff	??_ISR+1,pclatu
+  1902  000552  C001  FFFA         	movff	??_ISR,pclath
+  1903  000556  9235               	bcf	btemp,1,c	;clear compiler interrupt flag (level 2)
+  1904  000558  0011               	retfie		f
+  1905  00055A                     __end_of_ISR:
+  1906                           	opt stack 0
+  1907                           pclatu	equ	0xFFB
+  1908                           pclath	equ	0xFFA
+  1909                           tblptru	equ	0xFF8
+  1910                           tblptrh	equ	0xFF7
+  1911                           tblptrl	equ	0xFF6
+  1912                           tablat	equ	0xFF5
+  1913                           prodh	equ	0xFF4
+  1914                           prodl	equ	0xFF3
+  1915                           intcon	equ	0xFF2
+  1916                           postinc0	equ	0xFEE
+  1917                           fsr0h	equ	0xFEA
+  1918                           fsr0l	equ	0xFE9
+  1919                           wreg	equ	0xFE8
+  1920                           fsr1h	equ	0xFE2
+  1921                           fsr1l	equ	0xFE1
+  1922                           fsr2h	equ	0xFDA
+  1923                           fsr2l	equ	0xFD9
+  1924                           status	equ	0xFD8
+  1925                           
+  1926 ;; *************** function _timerInterrupt *****************
+  1927 ;; Defined at:
+  1928 ;;		line 11 in file "timer.c"
+  1929 ;; Parameters:    Size  Location     Type
+  1930 ;;		None
+  1931 ;; Auto vars:     Size  Location     Type
+  1932 ;;		None
+  1933 ;; Return value:  Size  Location     Type
+  1934 ;;                  1    wreg      unsigned char 
+  1935 ;; Registers used:
+  1936 ;;		wreg, status,2, status,0
+  1937 ;; Tracked objects:
+  1938 ;;		On entry : 0/0
+  1939 ;;		On exit  : 0/0
+  1940 ;;		Unchanged: 0/0
+  1941 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+  1942 ;;      Params:         0       0       0       0       0       0       0       0       0
+  1943 ;;      Locals:         0       0       0       0       0       0       0       0       0
+  1944 ;;      Temps:          0       0       0       0       0       0       0       0       0
+  1945 ;;      Totals:         0       0       0       0       0       0       0       0       0
+  1946 ;;Total ram usage:        0 bytes
+  1947 ;; Hardware stack levels used:    1
+  1948 ;; This function calls:
+  1949 ;;		Nothing
+  1950 ;; This function is called by:
+  1951 ;;		_ISR
+  1952 ;; This function uses a non-reentrant model
+  1953 ;;
+  1954                           
+  1955                           	psect	text16
+  1956  000598                     __ptext16:
+  1957                           	opt stack 0
+  1958  000598                     _timerInterrupt:
+  1959                           	opt stack 25
+  1960                           
+  1961                           ;timer.c: 12: if(!INTCONbits.TMR0IF) return 1;
+  1962                           
+  1963                           ;incstack = 0
+  1964  000598  B4F2               	btfsc	intcon,2,c	;volatile
+  1965  00059A  D002               	goto	i2l959
+  1966  00059C  0E01               	movlw	1
+  1967  00059E  0012               	return	
+  1968  0005A0                     i2l959:
+  1969                           
+  1970                           ;timer.c: 13: fractionCounter += 680;
+  1971  0005A0  0EA8               	movlw	168
+  1972  0005A2  2630               	addwf	_fractionCounter,f,c
+  1973  0005A4  0E02               	movlw	2
+  1974  0005A6  2231               	addwfc	_fractionCounter+1,f,c
+  1975                           
+  1976                           ;timer.c: 14: if(1000 < fractionCounter){
+  1977  0005A8  0EE9               	movlw	233
+  1978  0005AA  5C30               	subwf	_fractionCounter,w,c
+  1979  0005AC  0E03               	movlw	3
+  1980  0005AE  5831               	subwfb	_fractionCounter+1,w,c
+  1981  0005B0  A0D8               	btfss	status,0,c
+  1982  0005B2  D00A               	goto	i2l963
+  1983                           
+  1984                           ;timer.c: 15: fractionCounter -= 1000;
+  1985  0005B4  0EE8               	movlw	232
+  1986  0005B6  5E30               	subwf	_fractionCounter,f,c
+  1987  0005B8  0E03               	movlw	3
+  1988  0005BA  5A31               	subwfb	_fractionCounter+1,f,c
+  1989                           
+  1990                           ;timer.c: 16: millisCounter++;
+  1991  0005BC  0E01               	movlw	1
+  1992  0005BE  262C               	addwf	_millisCounter,f,c
+  1993  0005C0  0E00               	movlw	0
+  1994  0005C2  222D               	addwfc	_millisCounter+1,f,c
+  1995  0005C4  222E               	addwfc	_millisCounter+2,f,c
+  1996  0005C6  222F               	addwfc	_millisCounter+3,f,c
+  1997  0005C8                     i2l963:
+  1998                           
+  1999                           ;timer.c: 17: }
+  2000                           ;timer.c: 18: INTCONbits.TMR0IF = 0;
+  2001  0005C8  94F2               	bcf	intcon,2,c	;volatile
+  2002                           
+  2003                           ;timer.c: 19: return 0;
+  2004  0005CA  0E00               	movlw	0
+  2005  0005CC  0012               	return	
+  2006  0005CE                     __end_of_timerInterrupt:
+  2007                           	opt stack 0
+  2008  0000                     pclatu	equ	0xFFB
+  2009                           pclath	equ	0xFFA
+  2010                           tblptru	equ	0xFF8
+  2011                           tblptrh	equ	0xFF7
+  2012                           tblptrl	equ	0xFF6
+  2013                           tablat	equ	0xFF5
+  2014                           prodh	equ	0xFF4
+  2015                           prodl	equ	0xFF3
+  2016                           intcon	equ	0xFF2
+  2017                           postinc0	equ	0xFEE
+  2018                           fsr0h	equ	0xFEA
+  2019                           fsr0l	equ	0xFE9
+  2020                           wreg	equ	0xFE8
+  2021                           fsr1h	equ	0xFE2
+  2022                           fsr1l	equ	0xFE1
+  2023                           fsr2h	equ	0xFDA
+  2024                           fsr2l	equ	0xFD9
+  2025                           status	equ	0xFD8
+  2026                           pclatu	equ	0xFFB
+  2027                           pclath	equ	0xFFA
+  2028                           tblptru	equ	0xFF8
+  2029                           tblptrh	equ	0xFF7
+  2030                           tblptrl	equ	0xFF6
+  2031                           tablat	equ	0xFF5
+  2032                           prodh	equ	0xFF4
+  2033                           prodl	equ	0xFF3
+  2034                           intcon	equ	0xFF2
+  2035                           postinc0	equ	0xFEE
+  2036                           fsr0h	equ	0xFEA
+  2037                           fsr0l	equ	0xFE9
+  2038                           wreg	equ	0xFE8
+  2039                           fsr1h	equ	0xFE2
+  2040                           fsr1l	equ	0xFE1
+  2041                           fsr2h	equ	0xFDA
+  2042                           fsr2l	equ	0xFD9
+  2043                           status	equ	0xFD8
+  2044                           
+  2045                           	psect	rparam
+  2046  0000                     pclatu	equ	0xFFB
+  2047                           pclath	equ	0xFFA
+  2048                           tblptru	equ	0xFF8
+  2049                           tblptrh	equ	0xFF7
+  2050                           tblptrl	equ	0xFF6
+  2051                           tablat	equ	0xFF5
+  2052                           prodh	equ	0xFF4
+  2053                           prodl	equ	0xFF3
+  2054                           intcon	equ	0xFF2
+  2055                           postinc0	equ	0xFEE
+  2056                           fsr0h	equ	0xFEA
+  2057                           fsr0l	equ	0xFE9
+  2058                           wreg	equ	0xFE8
+  2059                           fsr1h	equ	0xFE2
+  2060                           fsr1l	equ	0xFE1
+  2061                           fsr2h	equ	0xFDA
+  2062                           fsr2l	equ	0xFD9
+  2063                           status	equ	0xFD8
+  2064                           
+  2065                           	psect	temp
+  2066  000035                     btemp:
+  2067                           	opt stack 0
+  2068  000035                     	ds	1
+  2069  0000                     int$flags	set	btemp
+  2070                           pclatu	equ	0xFFB
+  2071                           pclath	equ	0xFFA
+  2072                           tblptru	equ	0xFF8
+  2073                           tblptrh	equ	0xFF7
+  2074                           tblptrl	equ	0xFF6
+  2075                           tablat	equ	0xFF5
+  2076                           prodh	equ	0xFF4
+  2077                           prodl	equ	0xFF3
+  2078                           intcon	equ	0xFF2
+  2079                           postinc0	equ	0xFEE
+  2080                           fsr0h	equ	0xFEA
+  2081                           fsr0l	equ	0xFE9
+  2082                           wreg	equ	0xFE8
+  2083                           fsr1h	equ	0xFE2
+  2084                           fsr1l	equ	0xFE1
+  2085                           fsr2h	equ	0xFDA
+  2086                           fsr2l	equ	0xFD9
+  2087                           status	equ	0xFD8
+
+
+Data Sizes:
+    Strings     0
+    Constant    0
+    Data        0
+    BSS         9
+    Persistent  0
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMRAM           94     43      52
+    BANK0           160      0       0
+    BANK1           256      0       0
+    BANK2           256      0       0
+    BANK3           256      0       0
+    BANK4           256      0       0
+    BANK5           256      0       0
+    BANK6           256      0       0
+    BANK7           256      0       0
+
+Pointer List with Targets:
+
+    None.
+
+Critical Paths under _main in COMRAM
+
+    _main->_loop
+    _loop->_setMotors
+    _setMotors->_setLeftMotor
+    _setMotors->_setRightMotor
+    _setRightMotor->___awdiv
+    _setLeftMotor->___awdiv
+
+Critical Paths under _ISR in COMRAM
+
+    None.
+
+Critical Paths under _main in BANK0
+
+    None.
+
+Critical Paths under _ISR in BANK0
+
+    None.
+
+Critical Paths under _main in BANK1
+
+    None.
+
+Critical Paths under _ISR in BANK1
+
+    None.
+
+Critical Paths under _main in BANK2
+
+    None.
+
+Critical Paths under _ISR in BANK2
+
+    None.
+
+Critical Paths under _main in BANK3
+
+    None.
+
+Critical Paths under _ISR in BANK3
+
+    None.
+
+Critical Paths under _main in BANK4
+
+    None.
+
+Critical Paths under _ISR in BANK4
+
+    None.
+
+Critical Paths under _main in BANK5
+
+    None.
+
+Critical Paths under _ISR in BANK5
+
+    None.
+
+Critical Paths under _main in BANK6
+
+    None.
+
+Critical Paths under _ISR in BANK6
+
+    None.
+
+Critical Paths under _main in BANK7
+
+    None.
+
+Critical Paths under _ISR in BANK7
+
+    None.
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 0     0      0    3572
+                               _loop
+ ---------------------------------------------------------------------------------
+ (1) _loop                                                13    13      0    3572
+                                             30 COMRAM    13    13      0
+                            _initEtc
+                     _initInterrupts
+                         _initMotors
+                          _initTimer
+                             _initUI
+                             _millis
+                          _newStatus
+                            _setLEDs
+                          _setMotors
+                          _setStatus
+ ---------------------------------------------------------------------------------
+ (2) _setStatus                                            2     0      2     406
+                                             14 COMRAM     2     0      2
+ ---------------------------------------------------------------------------------
+ (2) _setMotors                                            4     0      4    2198
+                                             26 COMRAM     4     0      4
+                       _setLeftMotor
+                      _setRightMotor
+ ---------------------------------------------------------------------------------
+ (3) _setRightMotor                                        4     2      2     821
+                                             22 COMRAM     4     2      2
+                            ___awdiv
+ ---------------------------------------------------------------------------------
+ (3) _setLeftMotor                                         4     2      2     821
+                                             22 COMRAM     4     2      2
+                            ___awdiv
+ ---------------------------------------------------------------------------------
+ (4) ___awdiv                                              8     4      4     556
+                                             14 COMRAM     8     4      4
+ ---------------------------------------------------------------------------------
+ (2) _setLEDs                                              3     1      2     706
+                                             14 COMRAM     3     1      2
+ ---------------------------------------------------------------------------------
+ (2) _newStatus                                            1     1      0      15
+                                             14 COMRAM     1     1      0
+ ---------------------------------------------------------------------------------
+ (2) _millis                                               4     0      4       0
+                                             14 COMRAM     4     0      4
+ ---------------------------------------------------------------------------------
+ (2) _initUI                                               0     0      0       0
+ ---------------------------------------------------------------------------------
+ (2) _initTimer                                            0     0      0       0
+ ---------------------------------------------------------------------------------
+ (2) _initMotors                                           0     0      0       0
+ ---------------------------------------------------------------------------------
+ (2) _initInterrupts                                       0     0      0       0
+ ---------------------------------------------------------------------------------
+ (2) _initEtc                                              0     0      0       0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 4
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (5) _ISR                                                 14    14      0       0
+                                              0 COMRAM    14    14      0
+                     _timerInterrupt
+ ---------------------------------------------------------------------------------
+ (6) _timerInterrupt                                       0     0      0       0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 6
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+   _loop
+     _initEtc
+     _initInterrupts
+     _initMotors
+     _initTimer
+     _initUI
+     _millis
+     _newStatus
+     _setLEDs
+     _setMotors
+       _setLeftMotor
+         ___awdiv
+       _setRightMotor
+         ___awdiv
+     _setStatus
+
+ _ISR (ROOT)
+   _timerInterrupt
+
+ Address spaces:
+Name               Size   Autos  Total    Cost      Usage
+BIGRAM             7FF      0       0      21        0.0%
+EEDATA             100      0       0       0        0.0%
+BITBANK7           100      0       0      18        0.0%
+BANK7              100      0       0      19        0.0%
+BITBANK6           100      0       0      16        0.0%
+BANK6              100      0       0      17        0.0%
+BITBANK5           100      0       0      14        0.0%
+BANK5              100      0       0      15        0.0%
+BITBANK4           100      0       0      12        0.0%
+BANK4              100      0       0      13        0.0%
+BITBANK3           100      0       0      10        0.0%
+BANK3              100      0       0      11        0.0%
+BITBANK2           100      0       0       8        0.0%
+BANK2              100      0       0       9        0.0%
+BITBANK1           100      0       0       6        0.0%
+BANK1              100      0       0       7        0.0%
+BITBANK0            A0      0       0       4        0.0%
+BANK0               A0      0       0       5        0.0%
+BITCOMRAM           5E      0       0       0        0.0%
+COMRAM              5E     2B      34       1       55.3%
+BITSFR               0      0       0      40        0.0%
+SFR                  0      0       0      40        0.0%
+STACK                0      0       0       2        0.0%
+NULL                 0      0       0       0        0.0%
+ABS                  0      0      34      20        0.0%
+DATA                 0      0      34       3        0.0%
+CODE                 0      0       0       0        0.0%
+
+
+Microchip Technology PIC18 Macro Assembler V1.37 build -260352376 
+Symbol Table                                                                                   Wed Mar 14 00:06:41 2018
+
+                     l84 00AE             ___awdiv@sign 0014              __CFG_BORV$0 000000  
+           __CFG_CP0$OFF 000000             __CFG_CP1$OFF 000000             __CFG_CP2$OFF 000000  
+           __CFG_CP3$OFF 000000                      l993 0488                      l987 0478  
+                    l999 049E             __CFG_CPB$OFF 000000                      _PR2 000FCB  
+           __CFG_CPD$OFF 000000                      _ISR 0008                      u550 02E2  
+                    u630 03AC                      u625 034E                      u705 0410  
+                    u570 0308                      u650 03CE                      u810 013A  
+                    u715 05D8                      u571 0302                      u651 03C8  
+                    u716 05DA                      u725 05E2                      u726 05E4  
+                    u830 0156                      u735 05EC                      u736 05EE  
+                    u568 02E4                      u648 03AE                      u920 0270  
+                    u808 0124                      u588 030A                      u668 03D0  
+                    u828 013C                      u790 0122                      u880 01DA  
+                    u848 0158                      u938 0272                      u898 01DC  
+           __CFG_BOR$OFF 000000                      wreg 000FE8             __CFG_LVP$OFF 000000  
+                   ?_ISR 0001             __CFG_WDT$OFF 000000                     l1001 04A6  
+                   l1011 04C6                     l1003 04AA                     l1101 00EC  
+                   l1015 04D0                     l1031 033C                     l1033 0344  
+                   l1105 0166                     l1019 04DE                     l1027 0324  
+                   l1043 03E6                     l1131 023E                     l1123 01FA  
+                   l1115 01A4                     l1029 0334                     l1045 03F6  
+                   l1109 0178                     l1141 02A4                     l1047 03FE  
+                   l1119 01E8                     l1049 0406                     l1073 0040  
+                   l1147 0676                     l1085 009C                     l1095 00C0  
+                   l1079 0070                     _main 0676                     _loop 001A  
+                   fsr0h 000FEA                     fsr1h 000FE2                     fsr0l 000FE9  
+                   fsr2h 000FDA                     fsr1l 000FE1                     fsr2l 000FD9  
+                   btemp 0035                     pclat 000FFA                     prodh 000FF4  
+                   prodl 000FF3                     start 0016            __CFG_IESO$OFF 000000  
+           ___param_bank 000010         ??_timerInterrupt 0001           setMotors@right 001D  
+                  ??_ISR 0001            __CFG_PLLDIV$5 000000           __CFG_CCP2MX$ON 000000  
+                  ?_main 0001          __end_of___awdiv 04E8                    ?_loop 0001  
+                  _T0CON 000FD5          ___awdiv@divisor 0011                    _T2CON 000FCA  
+                  i2l963 05C8          ___awdiv@counter 0013                    i2l959 05A0  
+          __CFG_USBDIV$2 000000            __CFG_PWRT$OFF 000000            __CFG_WRT0$OFF 000000  
+          __CFG_WRT1$OFF 000000            __CFG_WRT2$OFF 000000            __CFG_WRT3$OFF 000000  
+         __CFG_EBTR0$OFF 000000           __CFG_FCMEN$OFF 000000           __CFG_EBTR1$OFF 000000  
+         __CFG_EBTR2$OFF 000000           __CFG_EBTR3$OFF 000000            __CFG_WRTB$OFF 000000  
+          __CFG_WRTC$OFF 000000            __CFG_WRTD$OFF 000000           __CFG_EBTRB$OFF 000000  
+        __end_of_initEtc 0676          __end_of_setLEDs 05F0                    tablat 000FF5  
+                  status 000FD8           __CFG_MCLRE$OFF 000000          __initialization 05F0  
+           __end_of_main 067C             __end_of_loop 02D8    __end_of_setRightMotor 0464  
+                 ??_main 002C                   ??_loop 001F            __activetblptr 000002  
+                 _CCPR1L 000FBE                   _CCPR2L 000FBB         ___awdiv@dividend 000F  
+        _fractionCounter 0030           __CFG_XINST$OFF 000000                ??___awdiv 0013  
+                 _initUI 0636                   _millis 0624                   clear_0 05F6  
+       ___awdiv@quotient 0015                   _status 0032                ??_initEtc 000F  
+              ??_setLEDs 0011                   tblptrh 000FF7                   tblptrl 000FF6  
+                 tblptru 000FF8               __accesstop 0060  __end_of__initialization 05FC  
+        __CFG_PBADEN$OFF 000000            ___rparam_used 000001           __pcstackCOMRAM 0001  
+__size_of_initInterrupts 0006            ?_setLeftMotor 0017       __size_of_initTimer 000A  
+     __size_of_newStatus 000C               _flagStatus 0034                  ?_initUI 0001  
+     __size_of_setMotors 001A                  ?_millis 000F       __size_of_setStatus 000E  
+         ??_setLeftMotor 0019          __CFG_VREGEN$OFF 000000                  __Hparam 0000  
+                __Lparam 0000                  ___awdiv 0464               _initMotors 055A  
+        __CFG_STVREN$OFF 000000          __size_of_initUI 0012                  __pcinit 05F0  
+        __size_of_millis 0012                  __ramtop 0800                  __ptext0 0676  
+                __ptext1 001A                  __ptext2 0648                  __ptext3 060A  
+                __ptext4 03A2                  __ptext5 02D8                  __ptext6 0464  
+                __ptext7 05CE                  __ptext8 0656                  __ptext9 0624  
+          _millisCounter 002C             __size_of_ISR 0552        __end_of_initTimer 066C  
+                _initEtc 066C                  _setLEDs 05CE        __end_of_newStatus 0662  
+         __pintcode_body 04E8     end_of_initialization 05FC        __end_of_setMotors 0624  
+      __end_of_setStatus 0656            __Lmediumconst 0000                  int_func 04E8  
+                loop@now 0028           _initInterrupts 067C                  postinc0 000FEE  
+              _PORTAbits 000F80  __size_of_timerInterrupt 0036                _TRISAbits 000F92  
+              _TRISBbits 000F93                _TRISCbits 000F94   __size_of_setRightMotor 00C2  
+            _CCP1CONbits 000FBD              _CCP2CONbits 000FBA   __end_of_initInterrupts 0682  
+          setMotors@left 001B     __end_of_setLeftMotor 03A2              ?_initMotors 0001  
+         __end_of_initUI 0648           __end_of_millis 0636      start_initialization 05F0  
+            __end_of_ISR 055A          ?_initInterrupts 0001         __CFG_LPT1OSC$OFF 000000  
+          _setRightMotor 03A2                 ??_initUI 000F                 ??_millis 0013  
+            __pbssCOMRAM 002C               newStatus@x 000F      __size_of_initMotors 003E  
+              __pintcode 0008                 ?___awdiv 000F           ?_setRightMotor 0017  
+         _timerInterrupt 0598                 ?_initEtc 0001                 ?_setLEDs 000F  
+             setStatus@s 000F                _initTimer 0662        setLeftMotor@speed 0017  
+              _newStatus 0656                 _LATAbits 000F89                 _LATBbits 000F8A  
+               _LATCbits 000F8B    __size_of_setLeftMotor 00CA                _setMotors 060A  
+              _setStatus 0648         __CFG_WDTPS$32768 000000   __end_of_timerInterrupt 05CE  
+             _ADCON1bits 000FC1               ?_initTimer 0001             _setLeftMotor 02D8  
+             ?_newStatus 0001               ?_setMotors 001B               ?_setStatus 000F  
+               __Hrparam 0000                 __Lrparam 0000          ??_setRightMotor 0019  
+           ??_initMotors 000F         __size_of___awdiv 0084       setRightMotor@speed 0017  
+        ?_timerInterrupt 0001         __size_of_initEtc 000A         __size_of_setLEDs 0022  
+               __ptext10 0636                 __ptext11 0662                 __ptext12 055A  
+               __ptext13 067C                 __ptext14 066C                 __ptext16 0598  
+     __end_of_initMotors 0598         ??_initInterrupts 000F            __size_of_main 0006  
+          __size_of_loop 02BE                 int$flags 0035    __CFG_CPUDIV$OSC1_PLL2 000000  
+             _INTCONbits 000FF2              ??_initTimer 000F                 setLEDs@g 0010  
+               setLEDs@r 0011                 setLEDs@y 000F              ??_newStatus 000F  
+               intlevel2 0000                 loop@next 0024              ??_setMotors 001F  
+            ??_setStatus 0011       __CFG_FOSC$HSPLL_HS 000000  
