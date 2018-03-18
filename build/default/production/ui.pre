@@ -4623,11 +4623,20 @@ extern __nonreentrant void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __nonreentrant void _delay3(unsigned char);
 
-# 18 "ui.h"
+# 4 "ui.h"
 void initUI(void);
 void setLEDs(char r, char y, char g);
+char getBTN1(void);
+char getBTN2(void);
+char getBTNs(void);
+void setLEDR(char v);
+void setLEDY(char v);
+void setLEDG(char v);
+char getLEDR(void);
+char getLEDY(void);
+char getLEDG(void);
 
-# 11 "ui.c"
+# 18 "ui.c"
 void initUI(void){
 TRISAbits.RA4 = 0;
 LATAbits.LATA4 = 0;
@@ -4643,7 +4652,43 @@ TRISAbits.RA0 = 1;
 }
 
 void setLEDs(char r, char y, char g){
-LATAbits.LATA4 = (r);
-LATAbits.LATA3 = (y);
-LATAbits.LATA2 = (g);
+setLEDR(r);
+setLEDY(y);
+setLEDG(g);
+}
+
+char getBTN1(void){
+return !PORTAbits.RA1;
+}
+
+char getBTN2(void){
+return !PORTAbits.RA0;
+}
+
+char getBTNs(void){
+return getBTN1() || getBTN2();
+}
+
+void setLEDR(char v){
+LATAbits.LATA4 = v;
+}
+
+void setLEDY(char v){
+LATAbits.LATA3 = v;
+}
+
+void setLEDG(char v){
+LATAbits.LATA2 = v;
+}
+
+char getLEDR(void){
+return LATAbits.LATA4;
+}
+
+char getLEDY(void){
+return LATAbits.LATA3;
+}
+
+char getLEDG(void){
+return LATAbits.LATA2;
 }

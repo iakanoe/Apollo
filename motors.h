@@ -3,6 +3,7 @@
 
 void initMotors(void);
 void setMotors(signed int left, signed int right);
+void setBothMotors(signed int speed);
 void setLeftMotor(signed int speed);
 void setRightMotor(signed int speed);
 

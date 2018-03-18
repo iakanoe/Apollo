@@ -4635,6 +4635,7 @@ extern __nonreentrant void _delay3(unsigned char);
 # 4 "motors.h"
 void initMotors(void);
 void setMotors(signed int left, signed int right);
+void setBothMotors(signed int speed);
 void setLeftMotor(signed int speed);
 void setRightMotor(signed int speed);
 
@@ -4643,26 +4644,61 @@ unsigned long millis(void);
 char timerInterrupt(void);
 void initTimer(void);
 
-# 18 "ui.h"
+# 4 "ui.h"
 void initUI(void);
 void setLEDs(char r, char y, char g);
+char getBTN1(void);
+char getBTN2(void);
+char getBTNs(void);
+void setLEDR(char v);
+void setLEDY(char v);
+void setLEDG(char v);
+char getLEDR(void);
+char getLEDY(void);
+char getLEDG(void);
 
 # 4 "etc.h"
 void initInterrupts(void);
 void initEtc(void);
 
-# 8 "main.c"
+# 4 "sensors.h"
+void initSensors(void);
+char getCNYs(void);
+char getCNY(char n);
+void switchIR(char n);
+char getIRs(void);
+char getIR(char n);
+
+enum {
+NOIR,
+IR_L,
+IR_CL,
+IR_C,
+IR_CR,
+IR_R
+};
+
+# 15 "main.c"
 enum {
 INIT,
 MENU,
 CLEAN,
 READY,
 WAIT,
-RUN
+RUN,
+ATTACK,
+BACK,
+RIGHT,
+LEFT,
+OPEN_RIGHT,
+OPEN_LEFT,
+CLOSED_RIGHT,
+CLOSED_LEFT
 };
 
 int status = INIT;
 char flagStatus = 0;
+int targetDirection;
 
 void setStatus(int s){
 status = s;
@@ -4683,11 +4719,13 @@ case INIT:
 initEtc();
 initUI();
 setLEDs(0, 1, 0);
+initSensors();
+switchIR(0);
 initInterrupts();
 initTimer();
 initMotors();
 setStatus(MENU);
-break;
+return;
 
 case MENU:
 if(newStatus()){
@@ -4695,16 +4733,17 @@ setLEDs(0, 0, 0);
 setMotors(0, 0);
 }
 
-# 55
-if((!(PORTAbits.RA1))){
+# 75
+if(getBTN1()){
 setStatus(CLEAN);
 return;
 }
-if((!(PORTAbits.RA0))){
+if(getBTN2()){
+while(getBTN2()) continue;
 setStatus(READY);
 return;
 }
-break;
+return;
 
 case CLEAN:
 if(newStatus()){
@@ -4713,41 +4752,139 @@ setLEDs(1, 1, 1);
 }
 if(now >= next){
 next = now + 500;
-LATAbits.LATA4 = (!LATAbits.LATA4);
-LATAbits.LATA3 = (!LATAbits.LATA3);
-LATAbits.LATA2 = (!LATAbits.LATA2);
+setLEDR(!getLEDR());
+setLEDY(!getLEDY());
+setLEDG(!getLEDG());
 }
-if(!(!(PORTAbits.RA1))) setStatus(MENU);
-break;
+if(!getBTN1()) setStatus(MENU);
+return;
 
 case READY:
 if(newStatus()){
 setMotors(0, 0);
-setLEDs(0, 0, 0);
+setLEDs(1, 0, 0);
 }
 if(now >= next){
 next = now + 500;
-LATAbits.LATA4 = (!LATAbits.LATA4);
+setLEDR(!getLEDR());
 }
-if(!(!(PORTAbits.RA0))) setStatus(WAIT);
-break;
+if(getBTN1()){
+setLEDs(1, 1, 1);
+while(getBTN1()) continue;
+targetDirection = LEFT;
+setStatus(WAIT);
+}
+if(getBTN2()){
+setLEDs(1, 1, 1);
+while(getBTN2()) continue;
+targetDirection = RIGHT;
+setStatus(WAIT);
+}
+return;
 
 case WAIT:
 if(newStatus()){
-next = now + 4900;
+next = now + 4950;
 setLEDs(1, 0, 0);
 setMotors(0, 0);
 }
-LATAbits.LATA3 = (now > (next - 3000));
+setLEDY(now > next - 4950 / 2);
 if(next >= now){
 setStatus(RUN);
 return;
 }
+return;
 
 case RUN:
+switchIR(1);
+if(getBTNs()){
+setStatus(MENU);
+return;
+}
+if(getCNYs()){
+setStatus(BACK);
+return;
+}
+if(getIR(IR_C)){
+if(getIR(IR_CL)){
+setStatus(CLOSED_LEFT);
+targetDirection = LEFT;
+return;
+}
+if(getIR(IR_CR)){
+setStatus(CLOSED_RIGHT);
+targetDirection = RIGHT;
+return;
+}
+setStatus(ATTACK);
+return;
+}
+if(getIR(IR_CL)){
+setStatus(OPEN_LEFT);
+targetDirection = LEFT;
+return;
+}
+if(getIR(IR_CR)){
+setStatus(OPEN_RIGHT);
+targetDirection = RIGHT;
+return;
+}
+if(getIR(IR_R)){
+setStatus(RIGHT);
+targetDirection = RIGHT;
+return;
+}
+if(getIR(IR_L)){
+setStatus(LEFT);
+targetDirection = LEFT;
+return;
+}
+setStatus(targetDirection);
+switchIR(0);
+return;
 
+case ATTACK:
+setBothMotors(1000);
+setStatus(RUN);
+return;
 
-break;
+case BACK:
+if(newStatus()){
+setBothMotors(1000);
+next = now + 1000;
+}
+if(now >= next || getIRs()) setStatus(RUN);
+return;
+
+case RIGHT:
+setMotors(1000, -1000);
+setStatus(RUN);
+return;
+
+case LEFT:
+setMotors(-1000, 1000);
+setStatus(RUN);
+return;
+
+case OPEN_RIGHT:
+setMotors(1000, 0);
+setStatus(RUN);
+return;
+
+case OPEN_LEFT:
+setMotors(0, 1000);
+setStatus(RUN);
+return;
+
+case CLOSED_RIGHT:
+setMotors(1000, 1000 / 2);
+setStatus(RUN);
+return;
+
+case CLOSED_LEFT:
+setMotors(1000 / 2, 1000);
+setStatus(RUN);
+return;
 }
 }
 

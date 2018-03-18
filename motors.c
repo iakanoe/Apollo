@@ -46,6 +46,11 @@ void setMotors(signed int left, signed int right){
     setRightMotor(right);
 }
 
+void setBothMotors(signed int speed){
+    setLeftMotor(speed);
+    setRightMotor(speed);
+}
+
 void setLeftMotor(signed int speed){
     LAT_MOT_L1 = speed >= 0;
     LAT_MOT_L2 = speed <= 0;

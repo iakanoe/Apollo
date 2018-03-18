@@ -1,15 +1,19 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"17 main.c
-[c E3767 0 1 2 3 4 5 .. ]
-[n E3767 . INIT MENU CLEAN READY WAIT RUN  ]
+"32 main.c
+[c E3806 0 1 2 3 4 5 6 7 8 9 10 11 12 13 .. ]
+[n E3806 . INIT MENU CLEAN READY WAIT RUN ATTACK BACK RIGHT LEFT OPEN_RIGHT OPEN_LEFT CLOSED_RIGHT CLOSED_LEFT  ]
 "4 timer.h
 [v _millis `(ul ~T0 @X0 0 ef ]
 "5 etc.h
 [v _initEtc `(v ~T0 @X0 0 ef ]
-"18 ui.h
+"4 ui.h
 [v _initUI `(v ~T0 @X0 0 ef ]
-"19
+"5
 [v _setLEDs `(v ~T0 @X0 0 ef3`uc`uc`uc ]
+"4 sensors.h
+[v _initSensors `(v ~T0 @X0 0 ef ]
+"7
+[v _switchIR `(v ~T0 @X0 0 ef1`uc ]
 "4 etc.h
 [v _initInterrupts `(v ~T0 @X0 0 ef ]
 "6 timer.h
@@ -18,55 +22,35 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _initMotors `(v ~T0 @X0 0 ef ]
 "5
 [v _setMotors `(v ~T0 @X0 0 ef2`i`i ]
-"2384 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic18f2550.h
-[s S182 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S182 . RA0 RA1 RA2 RA3 RA4 RA5 RA6 ]
-"2393
-[s S183 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S183 . AN0 AN1 AN2 AN3 T0CKI AN4 OSC2 ]
-"2402
-[s S184 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S184 . . VREFM VREFP . LVDIN ]
-"2409
-[s S185 :5 `uc 1 :1 `uc 1 ]
-[n S185 . . HLVDIN ]
-"2413
-[s S186 :1 `uc 1 ]
-[n S186 . ULPWUIN ]
-"2383
-[u S181 `S182 1 `S183 1 `S184 1 `S185 1 `S186 1 ]
-[n S181 . . . . . . ]
-"2417
-[v _PORTAbits `VS181 ~T0 @X0 0 e@3968 ]
-"2813
-[s S203 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S203 . LATA0 LATA1 LATA2 LATA3 LATA4 LATA5 LATA6 ]
-"2822
-[s S204 :1 `uc 1 ]
-[n S204 . LA0 ]
-"2825
-[s S205 :1 `uc 1 :1 `uc 1 ]
-[n S205 . . LA1 ]
-"2829
-[s S206 :2 `uc 1 :1 `uc 1 ]
-[n S206 . . LA2 ]
-"2833
-[s S207 :3 `uc 1 :1 `uc 1 ]
-[n S207 . . LA3 ]
-"2837
-[s S208 :4 `uc 1 :1 `uc 1 ]
-[n S208 . . LA4 ]
-"2841
-[s S209 :5 `uc 1 :1 `uc 1 ]
-[n S209 . . LA5 ]
-"2845
-[s S210 :6 `uc 1 :1 `uc 1 ]
-[n S210 . . LA6 ]
-"2812
-[u S202 `S203 1 `S204 1 `S205 1 `S206 1 `S207 1 `S208 1 `S209 1 `S210 1 ]
-[n S202 . . . . . . . . . ]
-"2850
-[v _LATAbits `VS202 ~T0 @X0 0 e@3977 ]
+"6 ui.h
+[v _getBTN1 `(uc ~T0 @X0 0 ef ]
+"7
+[v _getBTN2 `(uc ~T0 @X0 0 ef ]
+"9
+[v _setLEDR `(v ~T0 @X0 0 ef1`uc ]
+"12
+[v _getLEDR `(uc ~T0 @X0 0 ef ]
+"10
+[v _setLEDY `(v ~T0 @X0 0 ef1`uc ]
+"13
+[v _getLEDY `(uc ~T0 @X0 0 ef ]
+"11
+[v _setLEDG `(v ~T0 @X0 0 ef1`uc ]
+"14
+[v _getLEDG `(uc ~T0 @X0 0 ef ]
+"8
+[v _getBTNs `(uc ~T0 @X0 0 ef ]
+"5 sensors.h
+[v _getCNYs `(uc ~T0 @X0 0 ef ]
+"9
+[v _getIR `(uc ~T0 @X0 0 ef1`uc ]
+"146 main.c
+[c E3799 0 1 2 3 4 5 .. ]
+[n E3799 . NOIR IR_L IR_CL IR_C IR_CR IR_R  ]
+"6 motors.h
+[v _setBothMotors `(v ~T0 @X0 0 ef1`i ]
+"8 sensors.h
+[v _getIRs `(uc ~T0 @X0 0 ef ]
 [p mainexit ]
 "5 timer.h
 [v _timerInterrupt `(uc ~T0 @X0 0 ef ]
@@ -3645,342 +3629,709 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p x EBTRB=OFF ]
 [; ;motors.h: 4: void initMotors(void);
 [; ;motors.h: 5: void setMotors(signed int left, signed int right);
-[; ;motors.h: 6: void setLeftMotor(signed int speed);
-[; ;motors.h: 7: void setRightMotor(signed int speed);
+[; ;motors.h: 6: void setBothMotors(signed int speed);
+[; ;motors.h: 7: void setLeftMotor(signed int speed);
+[; ;motors.h: 8: void setRightMotor(signed int speed);
 [; ;timer.h: 4: unsigned long millis(void);
 [; ;timer.h: 5: char timerInterrupt(void);
 [; ;timer.h: 6: void initTimer(void);
-[; ;ui.h: 18: void initUI(void);
-[; ;ui.h: 19: void setLEDs(char r, char y, char g);
+[; ;ui.h: 4: void initUI(void);
+[; ;ui.h: 5: void setLEDs(char r, char y, char g);
+[; ;ui.h: 6: char getBTN1(void);
+[; ;ui.h: 7: char getBTN2(void);
+[; ;ui.h: 8: char getBTNs(void);
+[; ;ui.h: 9: void setLEDR(char v);
+[; ;ui.h: 10: void setLEDY(char v);
+[; ;ui.h: 11: void setLEDG(char v);
+[; ;ui.h: 12: char getLEDR(void);
+[; ;ui.h: 13: char getLEDY(void);
+[; ;ui.h: 14: char getLEDG(void);
 [; ;etc.h: 4: void initInterrupts(void);
 [; ;etc.h: 5: void initEtc(void);
-[; ;main.c: 8: enum {
-[; ;main.c: 9: INIT,
-[; ;main.c: 10: MENU,
-[; ;main.c: 11: CLEAN,
-[; ;main.c: 12: READY,
-[; ;main.c: 13: WAIT,
-[; ;main.c: 14: RUN
-[; ;main.c: 15: };
-"17 main.c
+[; ;sensors.h: 4: void initSensors(void);
+[; ;sensors.h: 5: char getCNYs(void);
+[; ;sensors.h: 6: char getCNY(char n);
+[; ;sensors.h: 7: void switchIR(char n);
+[; ;sensors.h: 8: char getIRs(void);
+[; ;sensors.h: 9: char getIR(char n);
+[; ;sensors.h: 11: enum {
+[; ;sensors.h: 12: NOIR,
+[; ;sensors.h: 13: IR_L,
+[; ;sensors.h: 14: IR_CL,
+[; ;sensors.h: 15: IR_C,
+[; ;sensors.h: 16: IR_CR,
+[; ;sensors.h: 17: IR_R
+[; ;sensors.h: 18: };
+[; ;main.c: 15: enum {
+[; ;main.c: 16: INIT,
+[; ;main.c: 17: MENU,
+[; ;main.c: 18: CLEAN,
+[; ;main.c: 19: READY,
+[; ;main.c: 20: WAIT,
+[; ;main.c: 21: RUN,
+[; ;main.c: 22: ATTACK,
+[; ;main.c: 23: BACK,
+[; ;main.c: 24: RIGHT,
+[; ;main.c: 25: LEFT,
+[; ;main.c: 26: OPEN_RIGHT,
+[; ;main.c: 27: OPEN_LEFT,
+[; ;main.c: 28: CLOSED_RIGHT,
+[; ;main.c: 29: CLOSED_LEFT
+[; ;main.c: 30: };
+"32 main.c
 [v _status `i ~T0 @X0 1 e ]
 [i _status
--> . `E3767 0 `i
+-> . `E3806 0 `i
 ]
-[; ;main.c: 17: int status = INIT;
-"18
+[; ;main.c: 32: int status = INIT;
+"33
 [v _flagStatus `uc ~T0 @X0 1 e ]
 [i _flagStatus
 -> -> 0 `i `uc
 ]
-[; ;main.c: 18: char flagStatus = 0;
-"20
+[; ;main.c: 33: char flagStatus = 0;
+"34
+[v _targetDirection `i ~T0 @X0 1 e ]
+[; ;main.c: 34: int targetDirection;
+"36
 [v _setStatus `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;main.c: 20: void setStatus(int s){
+[; ;main.c: 36: void setStatus(int s){
 [e :U _setStatus ]
 [v _s `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;main.c: 21: status = s;
-"21
+[; ;main.c: 37: status = s;
+"37
 [e = _status _s ]
-[; ;main.c: 22: flagStatus = 1;
-"22
+[; ;main.c: 38: flagStatus = 1;
+"38
 [e = _flagStatus -> -> 1 `i `uc ]
-[; ;main.c: 23: }
-"23
+[; ;main.c: 39: }
+"39
 [e :UE 467 ]
 }
-"25
+"41
 [v _newStatus `(uc ~T0 @X0 1 ef ]
 {
-[; ;main.c: 25: char newStatus(void){
+[; ;main.c: 41: char newStatus(void){
 [e :U _newStatus ]
 [f ]
-"26
+"42
 [v _x `uc ~T0 @X0 1 a ]
-[; ;main.c: 26: char x = flagStatus;
+[; ;main.c: 42: char x = flagStatus;
 [e = _x _flagStatus ]
-[; ;main.c: 27: flagStatus = 0;
-"27
+[; ;main.c: 43: flagStatus = 0;
+"43
 [e = _flagStatus -> -> 0 `i `uc ]
-[; ;main.c: 28: return x;
-"28
+[; ;main.c: 44: return x;
+"44
 [e ) _x ]
 [e $UE 468  ]
-[; ;main.c: 29: }
-"29
+[; ;main.c: 45: }
+"45
 [e :UE 468 ]
 }
-"31
+"47
 [v _loop `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 31: void loop(void){
+[; ;main.c: 47: void loop(void){
 [e :U _loop ]
 [f ]
-"32
+"48
 [v _now `ul ~T0 @X0 1 a ]
-[; ;main.c: 32: unsigned long now = millis();
+[; ;main.c: 48: unsigned long now = millis();
 [e = _now ( _millis ..  ]
-"33
+"49
 [v _next `ul ~T0 @X0 1 a ]
-[; ;main.c: 33: unsigned long next = 0;
+[; ;main.c: 49: unsigned long next = 0;
 [e = _next -> -> -> 0 `i `l `ul ]
-[; ;main.c: 34: switch(status){
-"34
+[; ;main.c: 50: switch(status){
+"50
 [e $U 471  ]
 {
-[; ;main.c: 35: case INIT:
-"35
+[; ;main.c: 51: case INIT:
+"51
 [e :U 472 ]
-[; ;main.c: 36: initEtc();
-"36
+[; ;main.c: 52: initEtc();
+"52
 [e ( _initEtc ..  ]
-[; ;main.c: 37: initUI();
-"37
+[; ;main.c: 53: initUI();
+"53
 [e ( _initUI ..  ]
-[; ;main.c: 38: setLEDs(0, 1, 0);
-"38
+[; ;main.c: 54: setLEDs(0, 1, 0);
+"54
 [e ( _setLEDs (3 , , -> -> 0 `i `uc -> -> 1 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 39: initInterrupts();
-"39
-[e ( _initInterrupts ..  ]
-[; ;main.c: 40: initTimer();
-"40
-[e ( _initTimer ..  ]
-[; ;main.c: 41: initMotors();
-"41
-[e ( _initMotors ..  ]
-[; ;main.c: 42: setStatus(MENU);
-"42
-[e ( _setStatus (1 -> . `E3767 1 `i ]
-[; ;main.c: 43: break;
-"43
-[e $U 470  ]
-[; ;main.c: 45: case MENU:
-"45
-[e :U 473 ]
-[; ;main.c: 46: if(newStatus()){
-"46
-[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 474  ]
-{
-[; ;main.c: 47: setLEDs(0, 0, 0);
-"47
-[e ( _setLEDs (3 , , -> -> 0 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 48: setMotors(0, 0);
-"48
-[e ( _setMotors (2 , -> 0 `i -> 0 `i ]
-"49
-}
-[e :U 474 ]
-[; ;main.c: 49: }
-[; ;main.c: 55: if((!(PORTAbits.RA1))){
+[; ;main.c: 55: initSensors();
 "55
-[e $ ! ! != -> . . _PORTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 475  ]
-{
-[; ;main.c: 56: setStatus(CLEAN);
+[e ( _initSensors ..  ]
+[; ;main.c: 56: switchIR(0);
 "56
-[e ( _setStatus (1 -> . `E3767 2 `i ]
-[; ;main.c: 57: return;
+[e ( _switchIR (1 -> -> 0 `i `uc ]
+[; ;main.c: 57: initInterrupts();
 "57
-[e $UE 469  ]
+[e ( _initInterrupts ..  ]
+[; ;main.c: 58: initTimer();
 "58
-}
-[e :U 475 ]
-[; ;main.c: 58: }
-[; ;main.c: 59: if((!(PORTAbits.RA0))){
+[e ( _initTimer ..  ]
+[; ;main.c: 59: initMotors();
 "59
-[e $ ! ! != -> . . _PORTAbits 0 0 `i -> -> -> 0 `i `Vuc `i 476  ]
-{
-[; ;main.c: 60: setStatus(READY);
+[e ( _initMotors ..  ]
+[; ;main.c: 60: setStatus(MENU);
 "60
-[e ( _setStatus (1 -> . `E3767 3 `i ]
+[e ( _setStatus (1 -> . `E3806 1 `i ]
 [; ;main.c: 61: return;
 "61
 [e $UE 469  ]
-"62
-}
-[e :U 476 ]
-[; ;main.c: 62: }
-[; ;main.c: 63: break;
+[; ;main.c: 63: case MENU:
 "63
-[e $U 470  ]
-[; ;main.c: 65: case CLEAN:
+[e :U 473 ]
+[; ;main.c: 64: if(newStatus()){
+"64
+[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 474  ]
+{
+[; ;main.c: 65: setLEDs(0, 0, 0);
 "65
-[e :U 477 ]
-[; ;main.c: 66: if(newStatus()){
-"66
-[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 478  ]
-{
-[; ;main.c: 67: setMotors(1000, 1000);
-"67
-[e ( _setMotors (2 , -> 1000 `i -> 1000 `i ]
-[; ;main.c: 68: setLEDs(1, 1, 1);
-"68
-[e ( _setLEDs (3 , , -> -> 1 `i `uc -> -> 1 `i `uc -> -> 1 `i `uc ]
-"69
-}
-[e :U 478 ]
-[; ;main.c: 69: }
-[; ;main.c: 70: if(now >= next){
-"70
-[e $ ! >= _now _next 479  ]
-{
-[; ;main.c: 71: next = now + 500;
-"71
-[e = _next + _now -> -> -> 500 `i `l `ul ]
-[; ;main.c: 72: LATAbits.LATA4 = (!LATAbits.LATA4);
-"72
-[e = . . _LATAbits 0 4 -> -> ! != -> . . _LATAbits 0 4 `i -> -> -> 0 `i `Vuc `i `i `uc ]
-[; ;main.c: 73: LATAbits.LATA3 = (!LATAbits.LATA3);
-"73
-[e = . . _LATAbits 0 3 -> -> ! != -> . . _LATAbits 0 3 `i -> -> -> 0 `i `Vuc `i `i `uc ]
-[; ;main.c: 74: LATAbits.LATA2 = (!LATAbits.LATA2);
-"74
-[e = . . _LATAbits 0 2 -> -> ! != -> . . _LATAbits 0 2 `i -> -> -> 0 `i `Vuc `i `i `uc ]
-"75
-}
-[e :U 479 ]
-[; ;main.c: 75: }
-[; ;main.c: 76: if(!(!(PORTAbits.RA1))) setStatus(MENU);
-"76
-[e $ ! ! ! != -> . . _PORTAbits 0 1 `i -> -> -> 0 `i `Vuc `i 480  ]
-[e ( _setStatus (1 -> . `E3767 1 `i ]
-[e :U 480 ]
-[; ;main.c: 77: break;
-"77
-[e $U 470  ]
-[; ;main.c: 79: case READY:
-"79
-[e :U 481 ]
-[; ;main.c: 80: if(newStatus()){
-"80
-[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 482  ]
-{
-[; ;main.c: 81: setMotors(0, 0);
-"81
-[e ( _setMotors (2 , -> 0 `i -> 0 `i ]
-[; ;main.c: 82: setLEDs(0, 0, 0);
-"82
 [e ( _setLEDs (3 , , -> -> 0 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc ]
+[; ;main.c: 66: setMotors(0, 0);
+"66
+[e ( _setMotors (2 , -> 0 `i -> 0 `i ]
+"67
+}
+[e :U 474 ]
+[; ;main.c: 67: }
+[; ;main.c: 75: if(getBTN1()){
+"75
+[e $ ! != -> ( _getBTN1 ..  `i -> -> -> 0 `i `uc `i 475  ]
+{
+[; ;main.c: 76: setStatus(CLEAN);
+"76
+[e ( _setStatus (1 -> . `E3806 2 `i ]
+[; ;main.c: 77: return;
+"77
+[e $UE 469  ]
+"78
+}
+[e :U 475 ]
+[; ;main.c: 78: }
+[; ;main.c: 79: if(getBTN2()){
+"79
+[e $ ! != -> ( _getBTN2 ..  `i -> -> -> 0 `i `uc `i 476  ]
+{
+[; ;main.c: 80: while(getBTN2()) continue;
+"80
+[e $U 477  ]
+[e :U 478 ]
+[e $U 477  ]
+[e :U 477 ]
+[e $ != -> ( _getBTN2 ..  `i -> -> -> 0 `i `uc `i 478  ]
+[e :U 479 ]
+[; ;main.c: 81: setStatus(READY);
+"81
+[e ( _setStatus (1 -> . `E3806 3 `i ]
+[; ;main.c: 82: return;
+"82
+[e $UE 469  ]
 "83
 }
-[e :U 482 ]
+[e :U 476 ]
 [; ;main.c: 83: }
-[; ;main.c: 84: if(now >= next){
+[; ;main.c: 84: return;
 "84
-[e $ ! >= _now _next 483  ]
-{
-[; ;main.c: 85: next = now + 500;
-"85
-[e = _next + _now -> -> -> 500 `i `l `ul ]
-[; ;main.c: 86: LATAbits.LATA4 = (!LATAbits.LATA4);
+[e $UE 469  ]
+[; ;main.c: 86: case CLEAN:
 "86
-[e = . . _LATAbits 0 4 -> -> ! != -> . . _LATAbits 0 4 `i -> -> -> 0 `i `Vuc `i `i `uc ]
+[e :U 480 ]
+[; ;main.c: 87: if(newStatus()){
 "87
-}
-[e :U 483 ]
-[; ;main.c: 87: }
-[; ;main.c: 88: if(!(!(PORTAbits.RA0))) setStatus(WAIT);
-"88
-[e $ ! ! ! != -> . . _PORTAbits 0 0 `i -> -> -> 0 `i `Vuc `i 484  ]
-[e ( _setStatus (1 -> . `E3767 4 `i ]
-[e :U 484 ]
-[; ;main.c: 89: break;
-"89
-[e $U 470  ]
-[; ;main.c: 91: case WAIT:
-"91
-[e :U 485 ]
-[; ;main.c: 92: if(newStatus()){
-"92
-[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 486  ]
+[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 481  ]
 {
-[; ;main.c: 93: next = now + 4900;
+[; ;main.c: 88: setMotors(1000, 1000);
+"88
+[e ( _setMotors (2 , -> 1000 `i -> 1000 `i ]
+[; ;main.c: 89: setLEDs(1, 1, 1);
+"89
+[e ( _setLEDs (3 , , -> -> 1 `i `uc -> -> 1 `i `uc -> -> 1 `i `uc ]
+"90
+}
+[e :U 481 ]
+[; ;main.c: 90: }
+[; ;main.c: 91: if(now >= next){
+"91
+[e $ ! >= _now _next 482  ]
+{
+[; ;main.c: 92: next = now + 500;
+"92
+[e = _next + _now -> -> -> 500 `i `l `ul ]
+[; ;main.c: 93: setLEDR(!getLEDR());
 "93
-[e = _next + _now -> -> -> 4900 `i `l `ul ]
-[; ;main.c: 94: setLEDs(1, 0, 0);
+[e ( _setLEDR (1 -> -> ! != -> ( _getLEDR ..  `i -> -> -> 0 `i `uc `i `i `uc ]
+[; ;main.c: 94: setLEDY(!getLEDY());
 "94
-[e ( _setLEDs (3 , , -> -> 1 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 95: setMotors(0, 0);
+[e ( _setLEDY (1 -> -> ! != -> ( _getLEDY ..  `i -> -> -> 0 `i `uc `i `i `uc ]
+[; ;main.c: 95: setLEDG(!getLEDG());
 "95
-[e ( _setMotors (2 , -> 0 `i -> 0 `i ]
+[e ( _setLEDG (1 -> -> ! != -> ( _getLEDG ..  `i -> -> -> 0 `i `uc `i `i `uc ]
 "96
 }
-[e :U 486 ]
+[e :U 482 ]
 [; ;main.c: 96: }
-[; ;main.c: 97: LATAbits.LATA3 = (now > (next - 3000));
+[; ;main.c: 97: if(!getBTN1()) setStatus(MENU);
 "97
-[e = . . _LATAbits 0 3 -> -> > _now - _next -> -> -> 3000 `i `l `ul `i `uc ]
-[; ;main.c: 98: if(next >= now){
+[e $ ! ! != -> ( _getBTN1 ..  `i -> -> -> 0 `i `uc `i 483  ]
+[e ( _setStatus (1 -> . `E3806 1 `i ]
+[e :U 483 ]
+[; ;main.c: 98: return;
 "98
-[e $ ! >= _next _now 487  ]
-{
-[; ;main.c: 99: setStatus(RUN);
-"99
-[e ( _setStatus (1 -> . `E3767 5 `i ]
-[; ;main.c: 100: return;
-"100
 [e $UE 469  ]
+[; ;main.c: 100: case READY:
+"100
+[e :U 484 ]
+[; ;main.c: 101: if(newStatus()){
 "101
+[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 485  ]
+{
+[; ;main.c: 102: setMotors(0, 0);
+"102
+[e ( _setMotors (2 , -> 0 `i -> 0 `i ]
+[; ;main.c: 103: setLEDs(1, 0, 0);
+"103
+[e ( _setLEDs (3 , , -> -> 1 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc ]
+"104
+}
+[e :U 485 ]
+[; ;main.c: 104: }
+[; ;main.c: 105: if(now >= next){
+"105
+[e $ ! >= _now _next 486  ]
+{
+[; ;main.c: 106: next = now + 500;
+"106
+[e = _next + _now -> -> -> 500 `i `l `ul ]
+[; ;main.c: 107: setLEDR(!getLEDR());
+"107
+[e ( _setLEDR (1 -> -> ! != -> ( _getLEDR ..  `i -> -> -> 0 `i `uc `i `i `uc ]
+"108
+}
+[e :U 486 ]
+[; ;main.c: 108: }
+[; ;main.c: 109: if(getBTN1()){
+"109
+[e $ ! != -> ( _getBTN1 ..  `i -> -> -> 0 `i `uc `i 487  ]
+{
+[; ;main.c: 110: setLEDs(1, 1, 1);
+"110
+[e ( _setLEDs (3 , , -> -> 1 `i `uc -> -> 1 `i `uc -> -> 1 `i `uc ]
+[; ;main.c: 111: while(getBTN1()) continue;
+"111
+[e $U 488  ]
+[e :U 489 ]
+[e $U 488  ]
+[e :U 488 ]
+[e $ != -> ( _getBTN1 ..  `i -> -> -> 0 `i `uc `i 489  ]
+[e :U 490 ]
+[; ;main.c: 112: targetDirection = LEFT;
+"112
+[e = _targetDirection -> . `E3806 9 `i ]
+[; ;main.c: 113: setStatus(WAIT);
+"113
+[e ( _setStatus (1 -> . `E3806 4 `i ]
+"114
 }
 [e :U 487 ]
-[; ;main.c: 101: }
-[; ;main.c: 103: case RUN:
-"103
-[e :U 488 ]
-[; ;main.c: 106: break;
-"106
-[e $U 470  ]
-"107
+[; ;main.c: 114: }
+[; ;main.c: 115: if(getBTN2()){
+"115
+[e $ ! != -> ( _getBTN2 ..  `i -> -> -> 0 `i `uc `i 491  ]
+{
+[; ;main.c: 116: setLEDs(1, 1, 1);
+"116
+[e ( _setLEDs (3 , , -> -> 1 `i `uc -> -> 1 `i `uc -> -> 1 `i `uc ]
+[; ;main.c: 117: while(getBTN2()) continue;
+"117
+[e $U 492  ]
+[e :U 493 ]
+[e $U 492  ]
+[e :U 492 ]
+[e $ != -> ( _getBTN2 ..  `i -> -> -> 0 `i `uc `i 493  ]
+[e :U 494 ]
+[; ;main.c: 118: targetDirection = RIGHT;
+"118
+[e = _targetDirection -> . `E3806 8 `i ]
+[; ;main.c: 119: setStatus(WAIT);
+"119
+[e ( _setStatus (1 -> . `E3806 4 `i ]
+"120
 }
-[; ;main.c: 107: }
+[e :U 491 ]
+[; ;main.c: 120: }
+[; ;main.c: 121: return;
+"121
+[e $UE 469  ]
+[; ;main.c: 123: case WAIT:
+"123
+[e :U 495 ]
+[; ;main.c: 124: if(newStatus()){
+"124
+[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 496  ]
+{
+[; ;main.c: 125: next = now + 4950;
+"125
+[e = _next + _now -> -> -> 4950 `i `l `ul ]
+[; ;main.c: 126: setLEDs(1, 0, 0);
+"126
+[e ( _setLEDs (3 , , -> -> 1 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc ]
+[; ;main.c: 127: setMotors(0, 0);
+"127
+[e ( _setMotors (2 , -> 0 `i -> 0 `i ]
+"128
+}
+[e :U 496 ]
+[; ;main.c: 128: }
+[; ;main.c: 129: setLEDY(now > next - 4950 / 2);
+"129
+[e ( _setLEDY (1 -> -> > _now - _next -> -> / -> 4950 `i -> 2 `i `l `ul `i `uc ]
+[; ;main.c: 130: if(next >= now){
+"130
+[e $ ! >= _next _now 497  ]
+{
+[; ;main.c: 131: setStatus(RUN);
+"131
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[; ;main.c: 132: return;
+"132
+[e $UE 469  ]
+"133
+}
+[e :U 497 ]
+[; ;main.c: 133: }
+[; ;main.c: 134: return;
+"134
+[e $UE 469  ]
+[; ;main.c: 136: case RUN:
+"136
+[e :U 498 ]
+[; ;main.c: 137: switchIR(1);
+"137
+[e ( _switchIR (1 -> -> 1 `i `uc ]
+[; ;main.c: 138: if(getBTNs()){
+"138
+[e $ ! != -> ( _getBTNs ..  `i -> -> -> 0 `i `uc `i 499  ]
+{
+[; ;main.c: 139: setStatus(MENU);
+"139
+[e ( _setStatus (1 -> . `E3806 1 `i ]
+[; ;main.c: 140: return;
+"140
+[e $UE 469  ]
+"141
+}
+[e :U 499 ]
+[; ;main.c: 141: }
+[; ;main.c: 142: if(getCNYs()){
+"142
+[e $ ! != -> ( _getCNYs ..  `i -> -> -> 0 `i `uc `i 500  ]
+{
+[; ;main.c: 143: setStatus(BACK);
+"143
+[e ( _setStatus (1 -> . `E3806 7 `i ]
+[; ;main.c: 144: return;
+"144
+[e $UE 469  ]
+"145
+}
+[e :U 500 ]
+[; ;main.c: 145: }
+[; ;main.c: 146: if(getIR(IR_C)){
+"146
+[e $ ! != -> ( _getIR (1 -> . `E3799 3 `uc `i -> -> -> 0 `i `uc `i 501  ]
+{
+[; ;main.c: 147: if(getIR(IR_CL)){
+"147
+[e $ ! != -> ( _getIR (1 -> . `E3799 2 `uc `i -> -> -> 0 `i `uc `i 502  ]
+{
+[; ;main.c: 148: setStatus(CLOSED_LEFT);
+"148
+[e ( _setStatus (1 -> . `E3806 13 `i ]
+[; ;main.c: 149: targetDirection = LEFT;
+"149
+[e = _targetDirection -> . `E3806 9 `i ]
+[; ;main.c: 150: return;
+"150
+[e $UE 469  ]
+"151
+}
+[e :U 502 ]
+[; ;main.c: 151: }
+[; ;main.c: 152: if(getIR(IR_CR)){
+"152
+[e $ ! != -> ( _getIR (1 -> . `E3799 4 `uc `i -> -> -> 0 `i `uc `i 503  ]
+{
+[; ;main.c: 153: setStatus(CLOSED_RIGHT);
+"153
+[e ( _setStatus (1 -> . `E3806 12 `i ]
+[; ;main.c: 154: targetDirection = RIGHT;
+"154
+[e = _targetDirection -> . `E3806 8 `i ]
+[; ;main.c: 155: return;
+"155
+[e $UE 469  ]
+"156
+}
+[e :U 503 ]
+[; ;main.c: 156: }
+[; ;main.c: 157: setStatus(ATTACK);
+"157
+[e ( _setStatus (1 -> . `E3806 6 `i ]
+[; ;main.c: 158: return;
+"158
+[e $UE 469  ]
+"159
+}
+[e :U 501 ]
+[; ;main.c: 159: }
+[; ;main.c: 160: if(getIR(IR_CL)){
+"160
+[e $ ! != -> ( _getIR (1 -> . `E3799 2 `uc `i -> -> -> 0 `i `uc `i 504  ]
+{
+[; ;main.c: 161: setStatus(OPEN_LEFT);
+"161
+[e ( _setStatus (1 -> . `E3806 11 `i ]
+[; ;main.c: 162: targetDirection = LEFT;
+"162
+[e = _targetDirection -> . `E3806 9 `i ]
+[; ;main.c: 163: return;
+"163
+[e $UE 469  ]
+"164
+}
+[e :U 504 ]
+[; ;main.c: 164: }
+[; ;main.c: 165: if(getIR(IR_CR)){
+"165
+[e $ ! != -> ( _getIR (1 -> . `E3799 4 `uc `i -> -> -> 0 `i `uc `i 505  ]
+{
+[; ;main.c: 166: setStatus(OPEN_RIGHT);
+"166
+[e ( _setStatus (1 -> . `E3806 10 `i ]
+[; ;main.c: 167: targetDirection = RIGHT;
+"167
+[e = _targetDirection -> . `E3806 8 `i ]
+[; ;main.c: 168: return;
+"168
+[e $UE 469  ]
+"169
+}
+[e :U 505 ]
+[; ;main.c: 169: }
+[; ;main.c: 170: if(getIR(IR_R)){
+"170
+[e $ ! != -> ( _getIR (1 -> . `E3799 5 `uc `i -> -> -> 0 `i `uc `i 506  ]
+{
+[; ;main.c: 171: setStatus(RIGHT);
+"171
+[e ( _setStatus (1 -> . `E3806 8 `i ]
+[; ;main.c: 172: targetDirection = RIGHT;
+"172
+[e = _targetDirection -> . `E3806 8 `i ]
+[; ;main.c: 173: return;
+"173
+[e $UE 469  ]
+"174
+}
+[e :U 506 ]
+[; ;main.c: 174: }
+[; ;main.c: 175: if(getIR(IR_L)){
+"175
+[e $ ! != -> ( _getIR (1 -> . `E3799 1 `uc `i -> -> -> 0 `i `uc `i 507  ]
+{
+[; ;main.c: 176: setStatus(LEFT);
+"176
+[e ( _setStatus (1 -> . `E3806 9 `i ]
+[; ;main.c: 177: targetDirection = LEFT;
+"177
+[e = _targetDirection -> . `E3806 9 `i ]
+[; ;main.c: 178: return;
+"178
+[e $UE 469  ]
+"179
+}
+[e :U 507 ]
+[; ;main.c: 179: }
+[; ;main.c: 180: setStatus(targetDirection);
+"180
+[e ( _setStatus (1 _targetDirection ]
+[; ;main.c: 181: switchIR(0);
+"181
+[e ( _switchIR (1 -> -> 0 `i `uc ]
+[; ;main.c: 182: return;
+"182
+[e $UE 469  ]
+[; ;main.c: 184: case ATTACK:
+"184
+[e :U 508 ]
+[; ;main.c: 185: setBothMotors(1000);
+"185
+[e ( _setBothMotors (1 -> 1000 `i ]
+[; ;main.c: 186: setStatus(RUN);
+"186
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[; ;main.c: 187: return;
+"187
+[e $UE 469  ]
+[; ;main.c: 189: case BACK:
+"189
+[e :U 509 ]
+[; ;main.c: 190: if(newStatus()){
+"190
+[e $ ! != -> ( _newStatus ..  `i -> -> -> 0 `i `uc `i 510  ]
+{
+[; ;main.c: 191: setBothMotors(1000);
+"191
+[e ( _setBothMotors (1 -> 1000 `i ]
+[; ;main.c: 192: next = now + 1000;
+"192
+[e = _next + _now -> -> -> 1000 `i `l `ul ]
+"193
+}
+[e :U 510 ]
+[; ;main.c: 193: }
+[; ;main.c: 194: if(now >= next || getIRs()) setStatus(RUN);
+"194
+[e $ ! || >= _now _next != -> ( _getIRs ..  `i -> -> -> 0 `i `uc `i 511  ]
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[e :U 511 ]
+[; ;main.c: 195: return;
+"195
+[e $UE 469  ]
+[; ;main.c: 197: case RIGHT:
+"197
+[e :U 512 ]
+[; ;main.c: 198: setMotors(1000, -1000);
+"198
+[e ( _setMotors (2 , -> 1000 `i -U -> 1000 `i ]
+[; ;main.c: 199: setStatus(RUN);
+"199
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[; ;main.c: 200: return;
+"200
+[e $UE 469  ]
+[; ;main.c: 202: case LEFT:
+"202
+[e :U 513 ]
+[; ;main.c: 203: setMotors(-1000, 1000);
+"203
+[e ( _setMotors (2 , -U -> 1000 `i -> 1000 `i ]
+[; ;main.c: 204: setStatus(RUN);
+"204
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[; ;main.c: 205: return;
+"205
+[e $UE 469  ]
+[; ;main.c: 207: case OPEN_RIGHT:
+"207
+[e :U 514 ]
+[; ;main.c: 208: setMotors(1000, 0);
+"208
+[e ( _setMotors (2 , -> 1000 `i -> 0 `i ]
+[; ;main.c: 209: setStatus(RUN);
+"209
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[; ;main.c: 210: return;
+"210
+[e $UE 469  ]
+[; ;main.c: 212: case OPEN_LEFT:
+"212
+[e :U 515 ]
+[; ;main.c: 213: setMotors(0, 1000);
+"213
+[e ( _setMotors (2 , -> 0 `i -> 1000 `i ]
+[; ;main.c: 214: setStatus(RUN);
+"214
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[; ;main.c: 215: return;
+"215
+[e $UE 469  ]
+[; ;main.c: 217: case CLOSED_RIGHT:
+"217
+[e :U 516 ]
+[; ;main.c: 218: setMotors(1000, 1000 / 2);
+"218
+[e ( _setMotors (2 , -> 1000 `i / -> 1000 `i -> 2 `i ]
+[; ;main.c: 219: setStatus(RUN);
+"219
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[; ;main.c: 220: return;
+"220
+[e $UE 469  ]
+[; ;main.c: 222: case CLOSED_LEFT:
+"222
+[e :U 517 ]
+[; ;main.c: 223: setMotors(1000 / 2, 1000);
+"223
+[e ( _setMotors (2 , / -> 1000 `i -> 2 `i -> 1000 `i ]
+[; ;main.c: 224: setStatus(RUN);
+"224
+[e ( _setStatus (1 -> . `E3806 5 `i ]
+[; ;main.c: 225: return;
+"225
+[e $UE 469  ]
+"226
+}
+[; ;main.c: 226: }
 [e $U 470  ]
-"34
+"50
 [e :U 471 ]
-[e [\ _status , $ -> . `E3767 0 `i 472
- , $ -> . `E3767 1 `i 473
- , $ -> . `E3767 2 `i 477
- , $ -> . `E3767 3 `i 481
- , $ -> . `E3767 4 `i 485
- , $ -> . `E3767 5 `i 488
+[e [\ _status , $ -> . `E3806 0 `i 472
+ , $ -> . `E3806 1 `i 473
+ , $ -> . `E3806 2 `i 480
+ , $ -> . `E3806 3 `i 484
+ , $ -> . `E3806 4 `i 495
+ , $ -> . `E3806 5 `i 498
+ , $ -> . `E3806 6 `i 508
+ , $ -> . `E3806 7 `i 509
+ , $ -> . `E3806 8 `i 512
+ , $ -> . `E3806 9 `i 513
+ , $ -> . `E3806 10 `i 514
+ , $ -> . `E3806 11 `i 515
+ , $ -> . `E3806 12 `i 516
+ , $ -> . `E3806 13 `i 517
  470 ]
-"107
+"226
 [e :U 470 ]
-[; ;main.c: 108: }
-"108
+[; ;main.c: 227: }
+"227
 [e :UE 469 ]
 }
-"110
+"229
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 110: void main(void){
+[; ;main.c: 229: void main(void){
 [e :U _main ]
 [f ]
-[; ;main.c: 111: while(1) loop();
-"111
-[e :U 491 ]
+[; ;main.c: 230: while(1) loop();
+"230
+[e :U 520 ]
 [e ( _loop ..  ]
-[e :U 490 ]
-[e $U 491  ]
-[e :U 492 ]
-[; ;main.c: 112: }
-"112
-[e :UE 489 ]
+[e :U 519 ]
+[e $U 520  ]
+[e :U 521 ]
+[; ;main.c: 231: }
+"231
+[e :UE 518 ]
 }
-[v F3789 `(v ~T0 @X0 1 tf ]
-"114
-[v _ISR `IF3789 ~T0 @X0 1 e ]
+[v F3837 `(v ~T0 @X0 1 tf ]
+"233
+[v _ISR `IF3837 ~T0 @X0 1 e ]
 {
-[; ;main.c: 114: void interrupt ISR(void){
+[; ;main.c: 233: void interrupt ISR(void){
 [e :U _ISR ]
 [f ]
-[; ;main.c: 115: if(timerInterrupt()) return;
-"115
-[e $ ! != -> ( _timerInterrupt ..  `i -> -> -> 0 `i `uc `i 494  ]
-[e $UE 493  ]
-[e :U 494 ]
-[; ;main.c: 116: }
-"116
-[e :UE 493 ]
+[; ;main.c: 234: if(timerInterrupt()) return;
+"234
+[e $ ! != -> ( _timerInterrupt ..  `i -> -> -> 0 `i `uc `i 523  ]
+[e $UE 522  ]
+[e :U 523 ]
+[; ;main.c: 235: }
+"235
+[e :UE 522 ]
 }

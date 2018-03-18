@@ -3,14 +3,31 @@
 [d edition pro ]
 [d chip 18F2550 ]
 [d frameptr 4065 ]
-"17 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
-[e E3767 . `uc
+"32 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
+[e E3806 . `uc
 INIT 0
 MENU 1
 CLEAN 2
 READY 3
 WAIT 4
 RUN 5
+ATTACK 6
+BACK 7
+RIGHT 8
+LEFT 9
+OPEN_RIGHT 10
+OPEN_LEFT 11
+CLOSED_RIGHT 12
+CLOSED_LEFT 13
+]
+"146
+[e E3799 . `uc
+NOIR 0
+IR_L 1
+IR_CL 2
+IR_C 3
+IR_CR 4
+IR_R 5
 ]
 "8 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\awdiv.c
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
@@ -38,35 +55,65 @@ RUN 5
 [v _initInterrupts initInterrupts `(v  1 e 1 0 ]
 "9
 [v _initEtc initEtc `(v  1 e 1 0 ]
-"20 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
+"36 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
 [v _setStatus setStatus `(v  1 e 1 0 ]
-"25
+"41
 [v _newStatus newStatus `(uc  1 e 1 0 ]
-"31
+"47
 [v _loop loop `(v  1 e 1 0 ]
-"110
+"229
 [v _main main `(v  1 e 1 0 ]
-"114
+"233
 [v _ISR ISR `II(v  1 e 1 0 ]
 "17 C:\Users\Ianick\Proyectos\Akhromsote.X\motors.c
 [v _initMotors initMotors `(v  1 e 1 0 ]
 "44
 [v _setMotors setMotors `(v  1 e 1 0 ]
 "49
+[v _setBothMotors setBothMotors `(v  1 e 1 0 ]
+"54
 [v _setLeftMotor setLeftMotor `(v  1 e 1 0 ]
-"59
+"64
 [v _setRightMotor setRightMotor `(v  1 e 1 0 ]
+"22 C:\Users\Ianick\Proyectos\Akhromsote.X\sensors.c
+[v _initSensors initSensors `(v  1 e 1 0 ]
+"34
+[v _getCNYs getCNYs `(uc  1 e 1 0 ]
+"44
+[v _switchIR switchIR `(v  1 e 1 0 ]
+"48
+[v _getIRs getIRs `(uc  1 e 1 0 ]
+"52
+[v _getIR getIR `(uc  1 e 1 0 ]
 "7 C:\Users\Ianick\Proyectos\Akhromsote.X\timer.c
 [v _millis millis `(ul  1 e 4 0 ]
 "11
 [v _timerInterrupt timerInterrupt `(uc  1 e 1 0 ]
 "22
 [v _initTimer initTimer `(v  1 e 1 0 ]
-"11 C:\Users\Ianick\Proyectos\Akhromsote.X\ui.c
+"18 C:\Users\Ianick\Proyectos\Akhromsote.X\ui.c
 [v _initUI initUI `(v  1 e 1 0 ]
-"25
+"32
 [v _setLEDs setLEDs `(v  1 e 1 0 ]
-[s S356 . 1 `uc 1 RA0 1 0 :1:0 
+"38
+[v _getBTN1 getBTN1 `(uc  1 e 1 0 ]
+"42
+[v _getBTN2 getBTN2 `(uc  1 e 1 0 ]
+"46
+[v _getBTNs getBTNs `(uc  1 e 1 0 ]
+"50
+[v _setLEDR setLEDR `(v  1 e 1 0 ]
+"54
+[v _setLEDY setLEDY `(v  1 e 1 0 ]
+"58
+[v _setLEDG setLEDG `(v  1 e 1 0 ]
+"62
+[v _getLEDR getLEDR `(uc  1 e 1 0 ]
+"66
+[v _getLEDY getLEDY `(uc  1 e 1 0 ]
+"70
+[v _getLEDG getLEDG `(uc  1 e 1 0 ]
+[s S529 . 1 `uc 1 RA0 1 0 :1:0 
 `uc 1 RA1 1 0 :1:1 
 `uc 1 RA2 1 0 :1:2 
 `uc 1 RA3 1 0 :1:3 
@@ -75,7 +122,7 @@ RUN 5
 `uc 1 RA6 1 0 :1:6 
 ]
 "2417 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic18f2550.h
-[s S364 . 1 `uc 1 AN0 1 0 :1:0 
+[s S634 . 1 `uc 1 AN0 1 0 :1:0 
 `uc 1 AN1 1 0 :1:1 
 `uc 1 AN2 1 0 :1:2 
 `uc 1 AN3 1 0 :1:3 
@@ -83,20 +130,78 @@ RUN 5
 `uc 1 AN4 1 0 :1:5 
 `uc 1 OSC2 1 0 :1:6 
 ]
-[s S372 . 1 `uc 1 . 1 0 :2:0 
+[s S642 . 1 `uc 1 . 1 0 :2:0 
 `uc 1 VREFM 1 0 :1:2 
 `uc 1 VREFP 1 0 :1:3 
 `uc 1 . 1 0 :1:4 
 `uc 1 LVDIN 1 0 :1:5 
 ]
-[s S378 . 1 `uc 1 . 1 0 :5:0 
+[s S648 . 1 `uc 1 . 1 0 :5:0 
 `uc 1 HLVDIN 1 0 :1:5 
 ]
-[s S381 . 1 `uc 1 ULPWUIN 1 0 :1:0 
+[s S651 . 1 `uc 1 ULPWUIN 1 0 :1:0 
 ]
-[u S383 . 1 `S356 1 . 1 0 `S364 1 . 1 0 `S372 1 . 1 0 `S378 1 . 1 0 `S381 1 . 1 0 ]
-[v _PORTAbits PORTAbits `VES383  1 e 1 @3968 ]
-[s S417 . 1 `uc 1 LATA0 1 0 :1:0 
+[u S653 . 1 `S529 1 . 1 0 `S634 1 . 1 0 `S642 1 . 1 0 `S648 1 . 1 0 `S651 1 . 1 0 ]
+[v _PORTAbits PORTAbits `VES653  1 e 1 @3968 ]
+[s S30 . 1 `uc 1 RB0 1 0 :1:0 
+`uc 1 RB1 1 0 :1:1 
+`uc 1 RB2 1 0 :1:2 
+`uc 1 RB3 1 0 :1:3 
+`uc 1 RB4 1 0 :1:4 
+`uc 1 RB5 1 0 :1:5 
+`uc 1 RB6 1 0 :1:6 
+`uc 1 RB7 1 0 :1:7 
+]
+"2546
+[s S922 . 1 `uc 1 INT0 1 0 :1:0 
+`uc 1 INT1 1 0 :1:1 
+`uc 1 INT2 1 0 :1:2 
+`uc 1 . 1 0 :2:3 
+`uc 1 PGM 1 0 :1:5 
+`uc 1 PGC 1 0 :1:6 
+`uc 1 PGD 1 0 :1:7 
+]
+[s S930 . 1 `uc 1 . 1 0 :3:0 
+`uc 1 CCP2_PA2 1 0 :1:3 
+]
+[u S933 . 1 `S30 1 . 1 0 `S922 1 . 1 0 `S930 1 . 1 0 ]
+[v _PORTBbits PORTBbits `VES933  1 e 1 @3969 ]
+[s S958 . 1 `uc 1 RC0 1 0 :1:0 
+`uc 1 RC1 1 0 :1:1 
+`uc 1 RC2 1 0 :1:2 
+`uc 1 . 1 0 :1:3 
+`uc 1 RC4 1 0 :1:4 
+`uc 1 RC5 1 0 :1:5 
+`uc 1 RC6 1 0 :1:6 
+`uc 1 RC7 1 0 :1:7 
+]
+"2670
+[s S967 . 1 `uc 1 T1OSO 1 0 :1:0 
+`uc 1 T1OSI 1 0 :1:1 
+`uc 1 CCP1 1 0 :1:2 
+`uc 1 . 1 0 :3:3 
+`uc 1 TX 1 0 :1:6 
+`uc 1 RX 1 0 :1:7 
+]
+[s S974 . 1 `uc 1 T13CKI 1 0 :1:0 
+`uc 1 . 1 0 :1:1 
+`uc 1 P1A 1 0 :1:2 
+`uc 1 . 1 0 :3:3 
+`uc 1 CK 1 0 :1:6 
+`uc 1 DT 1 0 :1:7 
+]
+[s S981 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 CCP2 1 0 :1:1 
+]
+[s S984 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 PA1 1 0 :1:2 
+]
+[s S987 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 PA2 1 0 :1:1 
+]
+[u S990 . 1 `S958 1 . 1 0 `S967 1 . 1 0 `S974 1 . 1 0 `S981 1 . 1 0 `S984 1 . 1 0 `S987 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES990  1 e 1 @3970 ]
+[s S557 . 1 `uc 1 LATA0 1 0 :1:0 
 `uc 1 LATA1 1 0 :1:1 
 `uc 1 LATA2 1 0 :1:2 
 `uc 1 LATA3 1 0 :1:3 
@@ -105,28 +210,28 @@ RUN 5
 `uc 1 LATA6 1 0 :1:6 
 ]
 "2850
-[s S425 . 1 `uc 1 LA0 1 0 :1:0 
+[s S565 . 1 `uc 1 LA0 1 0 :1:0 
 ]
-[s S427 . 1 `uc 1 . 1 0 :1:0 
+[s S567 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 LA1 1 0 :1:1 
 ]
-[s S430 . 1 `uc 1 . 1 0 :2:0 
+[s S570 . 1 `uc 1 . 1 0 :2:0 
 `uc 1 LA2 1 0 :1:2 
 ]
-[s S433 . 1 `uc 1 . 1 0 :3:0 
+[s S573 . 1 `uc 1 . 1 0 :3:0 
 `uc 1 LA3 1 0 :1:3 
 ]
-[s S436 . 1 `uc 1 . 1 0 :4:0 
+[s S576 . 1 `uc 1 . 1 0 :4:0 
 `uc 1 LA4 1 0 :1:4 
 ]
-[s S439 . 1 `uc 1 . 1 0 :5:0 
+[s S579 . 1 `uc 1 . 1 0 :5:0 
 `uc 1 LA5 1 0 :1:5 
 ]
-[s S442 . 1 `uc 1 . 1 0 :6:0 
+[s S582 . 1 `uc 1 . 1 0 :6:0 
 `uc 1 LA6 1 0 :1:6 
 ]
-[u S445 . 1 `S417 1 . 1 0 `S425 1 . 1 0 `S427 1 . 1 0 `S430 1 . 1 0 `S433 1 . 1 0 `S436 1 . 1 0 `S439 1 . 1 0 `S442 1 . 1 0 ]
-[v _LATAbits LATAbits `VES445  1 e 1 @3977 ]
+[u S585 . 1 `S557 1 . 1 0 `S565 1 . 1 0 `S567 1 . 1 0 `S570 1 . 1 0 `S573 1 . 1 0 `S576 1 . 1 0 `S579 1 . 1 0 `S582 1 . 1 0 ]
+[v _LATAbits LATAbits `VES585  1 e 1 @3977 ]
 [s S93 . 1 `uc 1 LATB0 1 0 :1:0 
 `uc 1 LATB1 1 0 :1:1 
 `uc 1 LATB2 1 0 :1:2 
@@ -186,7 +291,7 @@ RUN 5
 ]
 [u S189 . 1 `S168 1 . 1 0 `S175 1 . 1 0 `S177 1 . 1 0 `S180 1 . 1 0 `S183 1 . 1 0 `S186 1 . 1 0 ]
 [v _LATCbits LATCbits `VES189  1 e 1 @3979 ]
-[s S581 . 1 `uc 1 TRISA0 1 0 :1:0 
+[s S521 . 1 `uc 1 TRISA0 1 0 :1:0 
 `uc 1 TRISA1 1 0 :1:1 
 `uc 1 TRISA2 1 0 :1:2 
 `uc 1 TRISA3 1 0 :1:3 
@@ -195,8 +300,8 @@ RUN 5
 `uc 1 TRISA6 1 0 :1:6 
 ]
 "3174
-[u S597 . 1 `S581 1 . 1 0 `S356 1 . 1 0 ]
-[v _TRISAbits TRISAbits `VES597  1 e 1 @3986 ]
+[u S537 . 1 `S521 1 . 1 0 `S529 1 . 1 0 ]
+[v _TRISAbits TRISAbits `VES537  1 e 1 @3986 ]
 [s S21 . 1 `uc 1 TRISB0 1 0 :1:0 
 `uc 1 TRISB1 1 0 :1:1 
 `uc 1 TRISB2 1 0 :1:2 
@@ -207,15 +312,6 @@ RUN 5
 `uc 1 TRISB7 1 0 :1:7 
 ]
 "3373
-[s S30 . 1 `uc 1 RB0 1 0 :1:0 
-`uc 1 RB1 1 0 :1:1 
-`uc 1 RB2 1 0 :1:2 
-`uc 1 RB3 1 0 :1:3 
-`uc 1 RB4 1 0 :1:4 
-`uc 1 RB5 1 0 :1:5 
-`uc 1 RB6 1 0 :1:6 
-`uc 1 RB7 1 0 :1:7 
-]
 [u S39 . 1 `S21 1 . 1 0 `S30 1 . 1 0 ]
 [v _TRISBbits TRISBbits `VES39  1 e 1 @3987 ]
 [s S61 . 1 `uc 1 TRISC0 1 0 :1:0 
@@ -265,35 +361,35 @@ RUN 5
 [v _CCP1CONbits CCP1CONbits `VES231  1 e 1 @4029 ]
 "5646
 [v _CCPR1L CCPR1L `VEuc  1 e 1 @4030 ]
-[s S694 . 1 `uc 1 PCFG 1 0 :4:0 
+[s S753 . 1 `uc 1 PCFG 1 0 :4:0 
 `uc 1 VCFG 1 0 :2:4 
 ]
 "5759
-[s S697 . 1 `uc 1 PCFG0 1 0 :1:0 
+[s S756 . 1 `uc 1 PCFG0 1 0 :1:0 
 `uc 1 PCFG1 1 0 :1:1 
 `uc 1 PCFG2 1 0 :1:2 
 `uc 1 PCFG3 1 0 :1:3 
 `uc 1 VCFG0 1 0 :1:4 
 `uc 1 VCFG1 1 0 :1:5 
 ]
-[s S704 . 1 `uc 1 . 1 0 :3:0 
+[s S763 . 1 `uc 1 . 1 0 :3:0 
 `uc 1 CHSN3 1 0 :1:3 
 ]
-[s S707 . 1 `uc 1 . 1 0 :4:0 
+[s S766 . 1 `uc 1 . 1 0 :4:0 
 `uc 1 VCFG01 1 0 :1:4 
 ]
-[s S710 . 1 `uc 1 . 1 0 :5:0 
+[s S769 . 1 `uc 1 . 1 0 :5:0 
 `uc 1 VCFG11 1 0 :1:5 
 ]
-[u S713 . 1 `S694 1 . 1 0 `S697 1 . 1 0 `S704 1 . 1 0 `S707 1 . 1 0 `S710 1 . 1 0 ]
-[v _ADCON1bits ADCON1bits `VES713  1 e 1 @4033 ]
+[u S772 . 1 `S753 1 . 1 0 `S756 1 . 1 0 `S763 1 . 1 0 `S766 1 . 1 0 `S769 1 . 1 0 ]
+[v _ADCON1bits ADCON1bits `VES772  1 e 1 @4033 ]
 "6354
 [v _T2CON T2CON `VEuc  1 e 1 @4042 ]
 "6451
 [v _PR2 PR2 `VEuc  1 e 1 @4043 ]
 "7214
 [v _T0CON T0CON `VEuc  1 e 1 @4053 ]
-[s S518 . 1 `uc 1 RBIF 1 0 :1:0 
+[s S458 . 1 `uc 1 RBIF 1 0 :1:0 
 `uc 1 INT0IF 1 0 :1:1 
 `uc 1 TMR0IF 1 0 :1:2 
 `uc 1 RBIE 1 0 :1:3 
@@ -303,7 +399,7 @@ RUN 5
 `uc 1 GIE_GIEH 1 0 :1:7 
 ]
 "7734
-[s S527 . 1 `uc 1 . 1 0 :1:0 
+[s S467 . 1 `uc 1 . 1 0 :1:0 
 `uc 1 INT0F 1 0 :1:1 
 `uc 1 T0IF 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
@@ -312,39 +408,49 @@ RUN 5
 `uc 1 PEIE 1 0 :1:6 
 `uc 1 GIE 1 0 :1:7 
 ]
-[s S536 . 1 `uc 1 . 1 0 :6:0 
+[s S476 . 1 `uc 1 . 1 0 :6:0 
 `uc 1 GIEL 1 0 :1:6 
 `uc 1 GIEH 1 0 :1:7 
 ]
-[u S540 . 1 `S518 1 . 1 0 `S527 1 . 1 0 `S536 1 . 1 0 ]
-[v _INTCONbits INTCONbits `VES540  1 e 1 @4082 ]
-"17 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
+[u S480 . 1 `S458 1 . 1 0 `S467 1 . 1 0 `S476 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES480  1 e 1 @4082 ]
+"32 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
 [v _status status `i  1 e 2 0 ]
-"18
+"33
 [v _flagStatus flagStatus `uc  1 e 1 0 ]
+"34
+[v _targetDirection targetDirection `i  1 e 2 0 ]
 "4 C:\Users\Ianick\Proyectos\Akhromsote.X\timer.c
 [v _millisCounter millisCounter `ul  1 e 4 0 ]
 "5
 [v _fractionCounter fractionCounter `ui  1 e 2 0 ]
-"110 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
+"229 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"112
+"231
 } 0
-"31
+"47
 [v _loop loop `(v  1 e 1 0 ]
 {
-"32
-[v loop@now now `ul  1 a 4 39 ]
-"33
-[v loop@next next `ul  1 a 4 35 ]
-"108
+"48
+[v loop@now now `ul  1 a 4 38 ]
+"49
+[v loop@next next `ul  1 a 4 34 ]
+"227
 } 0
-"20
+"44 C:\Users\Ianick\Proyectos\Akhromsote.X\sensors.c
+[v _switchIR switchIR `(v  1 e 1 0 ]
+{
+[v switchIR@n n `uc  1 a 1 wreg ]
+[v switchIR@n n `uc  1 a 1 wreg ]
+[v switchIR@n n `uc  1 a 1 15 ]
+"46
+} 0
+"36 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
 [v _setStatus setStatus `(v  1 e 1 0 ]
 {
 [v setStatus@s s `i  1 p 2 14 ]
-"23
+"39
 } 0
 "44 C:\Users\Ianick\Proyectos\Akhromsote.X\motors.c
 [v _setMotors setMotors `(v  1 e 1 0 ]
@@ -353,17 +459,57 @@ RUN 5
 [v setMotors@right right `i  1 p 2 28 ]
 "47
 } 0
-"59
+"32 C:\Users\Ianick\Proyectos\Akhromsote.X\ui.c
+[v _setLEDs setLEDs `(v  1 e 1 0 ]
+{
+[v setLEDs@r r `uc  1 a 1 wreg ]
+[v setLEDs@r r `uc  1 a 1 wreg ]
+[v setLEDs@y y `uc  1 p 1 15 ]
+[v setLEDs@g g `uc  1 p 1 16 ]
+[v setLEDs@r r `uc  1 a 1 17 ]
+"36
+} 0
+"54
+[v _setLEDY setLEDY `(v  1 e 1 0 ]
+{
+[v setLEDY@v v `uc  1 a 1 wreg ]
+[v setLEDY@v v `uc  1 a 1 wreg ]
+[v setLEDY@v v `uc  1 a 1 14 ]
+"56
+} 0
+"50
+[v _setLEDR setLEDR `(v  1 e 1 0 ]
+{
+[v setLEDR@v v `uc  1 a 1 wreg ]
+[v setLEDR@v v `uc  1 a 1 wreg ]
+[v setLEDR@v v `uc  1 a 1 14 ]
+"52
+} 0
+"58
+[v _setLEDG setLEDG `(v  1 e 1 0 ]
+{
+[v setLEDG@v v `uc  1 a 1 wreg ]
+[v setLEDG@v v `uc  1 a 1 wreg ]
+[v setLEDG@v v `uc  1 a 1 14 ]
+"60
+} 0
+"49 C:\Users\Ianick\Proyectos\Akhromsote.X\motors.c
+[v _setBothMotors setBothMotors `(v  1 e 1 0 ]
+{
+[v setBothMotors@speed speed `i  1 p 2 26 ]
+"52
+} 0
+"64
 [v _setRightMotor setRightMotor `(v  1 e 1 0 ]
 {
 [v setRightMotor@speed speed `i  1 p 2 22 ]
-"67
+"72
 } 0
-"49
+"54
 [v _setLeftMotor setLeftMotor `(v  1 e 1 0 ]
 {
 [v setLeftMotor@speed speed `i  1 p 2 22 ]
-"57
+"62
 } 0
 "8 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\awdiv.c
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
@@ -378,37 +524,32 @@ RUN 5
 [v ___awdiv@divisor divisor `i  1 p 2 16 ]
 "42
 } 0
-"25 C:\Users\Ianick\Proyectos\Akhromsote.X\ui.c
-[v _setLEDs setLEDs `(v  1 e 1 0 ]
-{
-[v setLEDs@r r `uc  1 a 1 wreg ]
-[v setLEDs@r r `uc  1 a 1 wreg ]
-[v setLEDs@y y `uc  1 p 1 14 ]
-[v setLEDs@g g `uc  1 p 1 15 ]
-[v setLEDs@r r `uc  1 a 1 16 ]
-"29
-} 0
-"25 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
+"41 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
 [v _newStatus newStatus `(uc  1 e 1 0 ]
 {
-"26
+"42
 [v newStatus@x x `uc  1 a 1 14 ]
-"29
+"45
 } 0
 "7 C:\Users\Ianick\Proyectos\Akhromsote.X\timer.c
 [v _millis millis `(ul  1 e 4 0 ]
 {
 "9
 } 0
-"11 C:\Users\Ianick\Proyectos\Akhromsote.X\ui.c
+"18 C:\Users\Ianick\Proyectos\Akhromsote.X\ui.c
 [v _initUI initUI `(v  1 e 1 0 ]
 {
-"23
+"30
 } 0
 "22 C:\Users\Ianick\Proyectos\Akhromsote.X\timer.c
 [v _initTimer initTimer `(v  1 e 1 0 ]
 {
 "26
+} 0
+"22 C:\Users\Ianick\Proyectos\Akhromsote.X\sensors.c
+[v _initSensors initSensors `(v  1 e 1 0 ]
+{
+"32
 } 0
 "17 C:\Users\Ianick\Proyectos\Akhromsote.X\motors.c
 [v _initMotors initMotors `(v  1 e 1 0 ]
@@ -425,10 +566,58 @@ RUN 5
 {
 "11
 } 0
-"114 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
+"66 C:\Users\Ianick\Proyectos\Akhromsote.X\ui.c
+[v _getLEDY getLEDY `(uc  1 e 1 0 ]
+{
+"68
+} 0
+"62
+[v _getLEDR getLEDR `(uc  1 e 1 0 ]
+{
+"64
+} 0
+"70
+[v _getLEDG getLEDG `(uc  1 e 1 0 ]
+{
+"72
+} 0
+"48 C:\Users\Ianick\Proyectos\Akhromsote.X\sensors.c
+[v _getIRs getIRs `(uc  1 e 1 0 ]
+{
+"50
+} 0
+"52
+[v _getIR getIR `(uc  1 e 1 0 ]
+{
+[v getIR@n n `uc  1 a 1 wreg ]
+[v getIR@n n `uc  1 a 1 wreg ]
+[v getIR@n n `uc  1 a 1 14 ]
+"60
+} 0
+"34
+[v _getCNYs getCNYs `(uc  1 e 1 0 ]
+{
+"36
+} 0
+"46 C:\Users\Ianick\Proyectos\Akhromsote.X\ui.c
+[v _getBTNs getBTNs `(uc  1 e 1 0 ]
+{
+"48
+} 0
+"42
+[v _getBTN2 getBTN2 `(uc  1 e 1 0 ]
+{
+"44
+} 0
+"38
+[v _getBTN1 getBTN1 `(uc  1 e 1 0 ]
+{
+"40
+} 0
+"233 C:\Users\Ianick\Proyectos\Akhromsote.X\main.c
 [v _ISR ISR `II(v  1 e 1 0 ]
 {
-"116
+"235
 } 0
 "11 C:\Users\Ianick\Proyectos\Akhromsote.X\timer.c
 [v _timerInterrupt timerInterrupt `(uc  1 e 1 0 ]

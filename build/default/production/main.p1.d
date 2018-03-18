@@ -5,4 +5,5 @@ motors.h  \
 etc.h  \
 timer.h  \
 ui.h  \
-pragma.h 
+pragma.h  \
+sensors.h 

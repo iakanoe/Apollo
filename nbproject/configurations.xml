@@ -12,6 +12,8 @@
     <itemPath>ui.h</itemPath>
     <itemPath>etc.c</itemPath>
     <itemPath>etc.h</itemPath>
+    <itemPath>sensors.c</itemPath>
+    <itemPath>sensors.h</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

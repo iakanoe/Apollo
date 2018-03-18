@@ -1,5 +1,5 @@
 
-# 1 "motors.c"
+# 1 "sensors.c"
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -4623,67 +4623,60 @@ extern __nonreentrant void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __nonreentrant void _delay3(unsigned char);
 
-# 4 "motors.h"
-void initMotors(void);
-void setMotors(signed int left, signed int right);
-void setBothMotors(signed int speed);
-void setLeftMotor(signed int speed);
-void setRightMotor(signed int speed);
+# 4 "sensors.h"
+void initSensors(void);
+char getCNYs(void);
+char getCNY(char n);
+void switchIR(char n);
+char getIRs(void);
+char getIR(char n);
 
-# 17 "motors.c"
-void initMotors(void){
-TRISBbits.TRISB1 = 0;
-TRISBbits.TRISB0 = 0;
-TRISCbits.TRISC6 = 0;
-TRISCbits.TRISC7 = 0;
+enum {
+NOIR,
+IR_L,
+IR_CL,
+IR_C,
+IR_CR,
+IR_R
+};
 
-LATBbits.LATB1 = 0;
-LATBbits.LATB0 = 0;
-LATCbits.LATC6 = 0;
-LATCbits.LATC7 = 0;
-
-TRISCbits.TRISC1 = 0;
-TRISCbits.TRISC2 = 0;
+# 22 "sensors.c"
+void initSensors(void){
+TRISCbits.RC0 = 1;
+TRISAbits.RA5 = 1;
+TRISBbits.RB5 = 1;
 
 
-
-PR2 = 149;
-
-CCPR1L = 0;
-CCPR2L = 0;
-CCP1CONbits.DC1B = 0;
-CCP2CONbits.DC2B = 0;
-T2CON = 0x05;
-CCP1CONbits.CCP1M = 0xF;
-CCP2CONbits.CCP2M = 0xF;
+TRISBbits.RB2 = 0;
+TRISBbits.RB4 = 1;
+TRISBbits.RB3 = 1;
+LATBbits.LB2 = 0;
 }
 
-void setMotors(signed int left, signed int right){
-setLeftMotor(left);
-setRightMotor(right);
+char getCNYs(void){
+return PORTBbits.RB4 || PORTBbits.RB3;
 }
 
-void setBothMotors(signed int speed){
-setLeftMotor(speed);
-setRightMotor(speed);
+char getCNY(char n){
+if(n == 1) return PORTBbits.RB4;
+if(n == 2) return PORTBbits.RB3;
+return 0;
 }
 
-void setLeftMotor(signed int speed){
-LATCbits.LATC6 = speed >= 0;
-LATCbits.LATC7 = speed <= 0;
-if(speed < 0) speed = -speed;
-if(speed > 1000 || speed == 0) speed = 1000;
-speed = speed * 1024 / 1000;
-CCP2CONbits.DC2B = speed & 3;
-CCPR2L = speed >> 2;
+void switchIR(char n){
+LATBbits.LB2 = n != 0;
 }
 
-void setRightMotor(signed int speed){
-LATBbits.LATB1 = speed >= 0;
-LATBbits.LATB0 = speed <= 0;
-if(speed < 0) speed = -speed;
-if(speed > 1000 || speed == 0) speed = 1000;
-speed = speed * 1024 / 1000;
-CCP1CONbits.DC1B = speed & 3;
-CCPR1L = speed >> 2;
+char getIRs(void){
+return LATBbits.LB2 && (PORTCbits.RC0 || PORTAbits.RA5 || PORTBbits.RB5 || PORTCbits.RC5 || PORTCbits.RC4);
+}
+
+char getIR(char n){
+if(!LATBbits.LB2) return 0;
+if(n == 1) return PORTCbits.RC0;
+if(n == 2) return PORTAbits.RA5;
+if(n == 3) return PORTBbits.RB5;
+if(n == 4) return PORTCbits.RC5;
+if(n == 5) return PORTCbits.RC4;
+return 0;
 }
